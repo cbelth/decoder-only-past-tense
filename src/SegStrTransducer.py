@@ -4,6 +4,16 @@ from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 import lightning as L
 
+def copied(lemma, pred) -> list:
+    """
+    the longest prefix `pred` shares with `lemma`: what the model copied
+    before its first departure from the lemma
+    """
+    n = 0
+    while n < min(len(lemma), len(pred)) and lemma[n] == pred[n]:
+        n += 1
+    return list(lemma[:n])
+
 class SegStrTransducer(L.LightningModule):
     """
     a SegStrLM trained to map (features, source) to a target form, with the
@@ -132,7 +142,7 @@ class SegStrTransducer(L.LightningModule):
                 'correct': correct}
 
     @torch.no_grad()
-    def represent(self, ds, pool='sep') -> torch.Tensor:
+    def represent(self, ds, pool='sep', preds=None) -> torch.Tensor:
         """
         a (len(ds), d_model) representation of each row's prompt -- the lemma
         and its tags, never the target -- read off the final layer.
@@ -150,17 +160,32 @@ class SegStrTransducer(L.LightningModule):
         it is a state the model never reached in training, since it would
         have altered the stem before getting there.
 
+        `pool='decision'` follows the model's own output, `preds` (decoded
+        here if not given), for as long as it copies the lemma, and takes the
+        state at the first step where it departs: the state that chose the
+        suffix, the changed vowel or <eos>. f a ɪ n -> f a ɪ n d reads the
+        state after the whole stem, as `stem` does; s ɪ ŋ -> s æ ŋ reads the
+        state after s, which chose æ over ɪ; ɡ oʊ -> w ɛ n t reads <sep>. every
+        input up to there is a copied prefix of the lemma, so the output
+        decides where the state is read but is never inside it.
+
         sequences are right-padded, which the causal mask keeps from reaching
         any real position
         """
-        if pool not in ('sep', 'mean', 'stem'):
-            raise ValueError(f"pool must be 'sep', 'mean' or 'stem', not {pool!r}")
+        if pool not in ('sep', 'mean', 'stem', 'decision'):
+            raise ValueError("pool must be 'sep', 'mean', 'stem' or 'decision', "
+                             f"not {pool!r}")
+        if pool == 'decision' and preds is None:
+            preds = self.predict(ds)
         self.eval()
         prompts = []
         for idx in range(len(ds)):
             ids = ds.prompt(idx)
             if pool == 'stem':
                 ids = ids + ds.vocab.encode(ds.srcs[idx], bos=False, eos=False)
+            elif pool == 'decision':
+                ids = ids + ds.vocab.encode(copied(ds.srcs[idx], preds[idx]),
+                                            bos=False, eos=False)
             prompts.append(torch.tensor(ids, dtype=torch.long))
         reps = []
         size = self.hparams.batch_size
@@ -178,14 +203,16 @@ class SegStrTransducer(L.LightningModule):
         return torch.cat(reps)
 
     @torch.no_grad()
-    def nearest(self, query_ds, ref_ds, k=1, pool='sep') -> tuple:
+    def nearest(self, query_ds, ref_ds, k=1, pool='sep', query_preds=None,
+                ref_preds=None) -> tuple:
         """
-        for each row of `query_ds`, the `k` rows of `ref_ds` whose prompt
+        for each row of `query_ds`, the `k` rows of `ref_ds` whose
         representations are most cosine-similar, as (sims, indices), both
-        (len(query_ds), k) and best first
+        (len(query_ds), k) and best first. the preds are the model's own
+        outputs, used by `pool='decision'` and decoded if not given
         """
-        query = F.normalize(self.represent(query_ds, pool), dim=-1)
-        ref = F.normalize(self.represent(ref_ds, pool), dim=-1)
+        query = F.normalize(self.represent(query_ds, pool, query_preds), dim=-1)
+        ref = F.normalize(self.represent(ref_ds, pool, ref_preds), dim=-1)
         return (query @ ref.T).topk(k, dim=-1)
 
     def loader(self, ds, shuffle):
