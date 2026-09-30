@@ -278,10 +278,10 @@ def print_analogy(summaries, label='test') -> None:
     prediction, overall and on items where the prediction is irregular
     """
     print(f'\n{label}: k=1 analogy vs the model\'s prediction')
-    print(f'{"":>14}  {"exact":>6}  {"class":>6}  {"kappa":>6}  {"irreg class":>12}')
+    print(f'{"":>21}  {"exact":>6}  {"class":>6}  {"kappa":>6}  {"irreg class":>12}')
     for name, summ in summaries.items():
         every, irr = summ['all'], summ['pred_irregular']
-        print(f'{name:>14}  {every["matches_pred"]:6.3f}  {every["class_acc_pred"]:6.3f}  '
+        print(f'{name:>21}  {every["matches_pred"]:6.3f}  {every["class_acc_pred"]:6.3f}  '
               f'{every["kappa_pred"]:6.3f}  {irr["class_acc_pred"]:6.3f} of {irr["n"]:<3}')
 
 def analyze(model, splits, args, info=None):

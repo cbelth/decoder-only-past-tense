@@ -1,5 +1,7 @@
 import random
 
+from torch.nn import functional as F
+
 def change(lemma, past):
     """
     the edit that takes `lemma` to `past`, as (old, new, right): strip the
@@ -220,7 +222,10 @@ def summarize(rows) -> dict:
             'confusion': confusion}
 
 MODEL_POOLS = ('sep', 'mean', 'stem', 'decision')
-METHODS = (tuple(f'model_{pool}' for pool in MODEL_POOLS)
+# neighbours in the spline view of the decision step (see spline.py): the
+# nearest ReLU region, and the most similar templates
+SPLINE_METHODS = ('model_region', 'model_template', 'model_template_chosen')
+METHODS = (tuple(f'model_{pool}' for pool in MODEL_POOLS) + SPLINE_METHODS
            + ('string', 'final', 'majority', 'random'))
 
 def final_nearest(query_ds, ref_ds, seed=0) -> list:
@@ -249,19 +254,45 @@ def majority_nearest(query_ds, ref_ds, ref_preds, seed=0) -> list:
     pool = [i for i, c in enumerate(classes) if c == top]
     return [rng.choice(pool) for _ in range(len(query_ds))]
 
+def spline_nearest(name, query, ref, seed=0) -> list:
+    """
+    nearest reference row under a spline method, from `spline.decision_features`
+    of both sides: least Hamming distance between ReLU codes for
+    `model_region`, ties broken at random since distances are integers;
+    greatest template cosine for the template methods
+    """
+    if name == 'model_region':
+        from spline import hamming
+        dist = hamming(query['code'], ref['code'])
+        rng = random.Random(seed)
+        return [rng.choice((row == row.min()).nonzero().flatten().tolist())
+                for row in dist]
+    key = name[len('model_'):]
+    q = F.normalize(query[key], dim=-1)
+    r = F.normalize(ref[key], dim=-1)
+    return (q @ r.T).argmax(1).tolist()
+
 def neighbor_sets(model, query_ds, ref_ds, query_preds, ref_preds,
                   methods=METHODS, seed=0) -> dict:
     """
     the k=1 neighbour of every query row under each of `methods`: the model's
-    representations (`model_<pool>`) plus the baselines. the preds are the
-    model's own outputs, which `model_decision` reads its states along
+    representations (`model_<pool>`), its decision-step regions and templates
+    (SPLINE_METHODS), plus the baselines. the preds are the model's own
+    outputs, which `model_decision` and the spline methods read along
     """
     unknown = set(methods) - set(METHODS)
     if unknown:
         raise ValueError(f'unknown methods {sorted(unknown)}; choose from {METHODS}')
     sets = {}
+    features = None
     for name in methods:
-        if name.startswith('model_'):
+        if name in SPLINE_METHODS:
+            if features is None:
+                from spline import decision_features
+                features = (decision_features(model, query_ds, query_preds),
+                            decision_features(model, ref_ds, ref_preds))
+            sets[name] = spline_nearest(name, *features, seed=seed)
+        elif name.startswith('model_'):
             _, idxs = model.nearest(query_ds, ref_ds, k=1, pool=name[len('model_'):],
                                     query_preds=query_preds, ref_preds=ref_preds)
             sets[name] = idxs[:, 0].tolist()
