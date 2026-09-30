@@ -6,6 +6,8 @@
     "out": "../results",
     "epochs": 500,
     "patience": 20,
+    "stop": "loss_train_irregular",
+    "train_irr_target": 0.9,
     "batch_size": 64,
     "lr": 0.001,
     "d_model": 64,
@@ -18,115 +20,1146 @@
     "k": 1,
     "quiet": true
   },
-  "best_epoch": 47,
-  "best_ftune_loss": 0.5203148126602173,
-  "epochs_run": 68,
+  "best_epoch": 138,
+  "best_ftune_loss": 0.6220026612281799,
+  "best_ftune_irr_acc": 0.0555555559694767,
+  "best_train_irr_acc": 0.9166666865348816,
+  "epochs_run": 175,
+  "stop": "loss_train_irregular",
   "acc": {
-    "train": 0.8666666666666667,
-    "ftune": 0.6416666666666667,
-    "dev": 0.4166666666666667,
-    "test": 0.4066666666666667
+    "train": 0.9833333333333333,
+    "ftune": 0.6583333333333333,
+    "dev": 0.48,
+    "test": 0.44666666666666666
   },
   "analogy": {
     "ftune": {
       "model_sep": {
         "all": {
           "n": 120,
-          "applies": 0.8833333333333333,
-          "matches_pred": 0.3333333333333333,
-          "matches_gold": 0.35
+          "applies": 0.925,
+          "matches_pred": 0.38333333333333336,
+          "matches_gold": 0.39166666666666666,
+          "class_acc_pred": 0.38333333333333336,
+          "class_acc_gold": 0.4,
+          "kappa_pred": 0.125640015754234
         },
-        "regular": {
+        "gold_regular": {
           "n": 102,
-          "applies": 0.9117647058823529,
-          "matches_pred": 0.3333333333333333,
-          "matches_gold": 0.4117647058823529
+          "applies": 0.9215686274509803,
+          "matches_pred": 0.38235294117647056,
+          "matches_gold": 0.46078431372549017,
+          "class_acc_pred": 0.38235294117647056,
+          "class_acc_gold": 0.46078431372549017,
+          "kappa_pred": 0.13326139735635278
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 18,
-          "applies": 0.7222222222222222,
-          "matches_pred": 0.3333333333333333,
-          "matches_gold": 0.0
+          "applies": 0.9444444444444444,
+          "matches_pred": 0.3888888888888889,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.3888888888888889,
+          "class_acc_gold": 0.05555555555555555,
+          "kappa_pred": 0.08755760368663593
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 0.9347826086956522,
+          "matches_pred": 0.5,
+          "matches_gold": 0.42391304347826086,
+          "class_acc_pred": 0.5,
+          "class_acc_gold": 0.42391304347826086,
+          "kappa_pred": 0.1972685887708649
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 0.6666666666666666,
+          "matches_pred": 0.0,
+          "matches_gold": 0.2222222222222222,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.3333333333333333,
+          "kappa_pred": -0.08
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.3157894736842105,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.3157894736842105,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 0.6086956521739131,
+            "guessed": 67
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.4666666666666667,
+            "guessed": 32
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.25,
+            "guessed": 12
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 5
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 28,
+            "reg_t": 10,
+            "vowel_change": 2,
+            "rhyme_replaced": 2,
+            "reg_\u0259d": 3,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_d": 13,
+            "reg_t": 14,
+            "reg_\u0259d": 3
+          },
+          "reg_\u0259d": {
+            "reg_t": 5,
+            "reg_d": 6,
+            "reg_\u0259d": 4,
+            "rhyme_replaced": 1
+          },
+          "no_change": {
+            "reg_d": 3
+          },
+          "vowel_change": {
+            "reg_d": 2
+          },
+          "vowel_change_suffix": {
+            "vowel_change": 3,
+            "reg_d": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "reg_d": 14,
+            "reg_\u0259d": 2,
+            "reg_t": 3
+          }
         }
       },
       "model_mean": {
         "all": {
           "n": 120,
-          "applies": 0.9,
-          "matches_pred": 0.375,
-          "matches_gold": 0.4
+          "applies": 0.9083333333333333,
+          "matches_pred": 0.35833333333333334,
+          "matches_gold": 0.35833333333333334,
+          "class_acc_pred": 0.36666666666666664,
+          "class_acc_gold": 0.375,
+          "kappa_pred": 0.11926605504587151
         },
-        "regular": {
+        "gold_regular": {
           "n": 102,
-          "applies": 0.9313725490196079,
-          "matches_pred": 0.38235294117647056,
-          "matches_gold": 0.47058823529411764
+          "applies": 0.9215686274509803,
+          "matches_pred": 0.3431372549019608,
+          "matches_gold": 0.4215686274509804,
+          "class_acc_pred": 0.3431372549019608,
+          "class_acc_gold": 0.4215686274509804,
+          "kappa_pred": 0.08194519075765724
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 18,
-          "applies": 0.7222222222222222,
-          "matches_pred": 0.3333333333333333,
-          "matches_gold": 0.0
+          "applies": 0.8333333333333334,
+          "matches_pred": 0.4444444444444444,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.5,
+          "class_acc_gold": 0.1111111111111111,
+          "kappa_pred": 0.3135593220338983
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 0.9130434782608695,
+          "matches_pred": 0.4673913043478261,
+          "matches_gold": 0.3804347826086957,
+          "class_acc_pred": 0.4673913043478261,
+          "class_acc_gold": 0.3804347826086957,
+          "kappa_pred": 0.16979742173112342
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 0.6666666666666666,
+          "matches_pred": 0.0,
+          "matches_gold": 0.3333333333333333,
+          "class_acc_pred": 0.1111111111111111,
+          "class_acc_gold": 0.5555555555555556,
+          "kappa_pred": 0.04
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.2631578947368421,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.2631578947368421,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 0.5652173913043478,
+            "guessed": 61
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.5,
+            "guessed": 37
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.125,
+            "guessed": 6
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 5
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.5,
+            "guessed": 5
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "rhyme_replaced": 1,
+            "reg_d": 26,
+            "reg_\u0259d": 2,
+            "vowel_change": 1,
+            "vowel_change_suffix": 2,
+            "no_change": 3,
+            "coda_change": 3,
+            "reg_t": 8
+          },
+          "reg_t": {
+            "vowel_change": 1,
+            "reg_t": 15,
+            "reg_d": 14
+          },
+          "reg_\u0259d": {
+            "reg_t": 7,
+            "no_change": 2,
+            "reg_\u0259d": 2,
+            "reg_d": 5
+          },
+          "no_change": {
+            "reg_t": 2,
+            "reg_d": 1
+          },
+          "vowel_change": {
+            "vowel_change": 1,
+            "reg_d": 1
+          },
+          "vowel_change_suffix": {
+            "vowel_change": 2,
+            "reg_t": 1,
+            "reg_d": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "reg_d": 13,
+            "reg_\u0259d": 2,
+            "reg_t": 4
+          }
         }
       },
       "model_stem": {
         "all": {
           "n": 120,
-          "applies": 0.9583333333333334,
-          "matches_pred": 0.725,
-          "matches_gold": 0.8083333333333333
+          "applies": 0.9666666666666667,
+          "matches_pred": 0.75,
+          "matches_gold": 0.7916666666666666,
+          "class_acc_pred": 0.75,
+          "class_acc_gold": 0.7916666666666666,
+          "kappa_pred": 0.6580547112462006
         },
-        "regular": {
+        "gold_regular": {
           "n": 102,
           "applies": 0.9705882352941176,
-          "matches_pred": 0.7450980392156863,
-          "matches_gold": 0.9313725490196079
+          "matches_pred": 0.7549019607843137,
+          "matches_gold": 0.9215686274509803,
+          "class_acc_pred": 0.7549019607843137,
+          "class_acc_gold": 0.9215686274509803,
+          "kappa_pred": 0.6620278330019881
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 18,
+          "applies": 0.9444444444444444,
+          "matches_pred": 0.7222222222222222,
+          "matches_gold": 0.05555555555555555,
+          "class_acc_pred": 0.7222222222222222,
+          "class_acc_gold": 0.05555555555555555,
+          "kappa_pred": 0.6326530612244898
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 1.0,
+          "matches_pred": 0.9347826086956522,
+          "matches_gold": 0.8152173913043478,
+          "class_acc_pred": 0.9347826086956522,
+          "class_acc_gold": 0.8152173913043478,
+          "kappa_pred": 0.8964741185296324
+        },
+        "pred_irregular": {
+          "n": 9,
           "applies": 0.8888888888888888,
-          "matches_pred": 0.6111111111111112,
-          "matches_gold": 0.1111111111111111
+          "matches_pred": 0.4444444444444444,
+          "matches_gold": 0.4444444444444444,
+          "class_acc_pred": 0.4444444444444444,
+          "class_acc_gold": 0.4444444444444444,
+          "kappa_pred": 0.34782608695652173
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 0.8421052631578947,
+          "matches_pred": 0.0,
+          "matches_gold": 0.8421052631578947,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.8421052631578947,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 0.9782608695652174,
+            "guessed": 57
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.9666666666666667,
+            "guessed": 32
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.75,
+            "guessed": 17
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.6666666666666666,
+            "guessed": 2
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 1.0,
+            "guessed": 6
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 4
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 45,
+            "rhyme_replaced": 1
+          },
+          "reg_t": {
+            "reg_t": 29,
+            "coda_change": 1
+          },
+          "reg_\u0259d": {
+            "coda_change": 3,
+            "reg_\u0259d": 12,
+            "vowel_change": 1
+          },
+          "no_change": {
+            "no_change": 2,
+            "vowel_change": 1
+          },
+          "vowel_change": {
+            "vowel_change": 2
+          },
+          "vowel_change_suffix": {
+            "reg_d": 3,
+            "reg_t": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "vowel_change": 2,
+            "reg_d": 9,
+            "reg_t": 2,
+            "reg_\u0259d": 5,
+            "rhyme_replaced": 1
+          }
+        }
+      },
+      "model_decision": {
+        "all": {
+          "n": 120,
+          "applies": 0.8916666666666667,
+          "matches_pred": 0.8,
+          "matches_gold": 0.675,
+          "class_acc_pred": 0.8166666666666667,
+          "class_acc_gold": 0.6916666666666667,
+          "kappa_pred": 0.7551020408163265
+        },
+        "gold_regular": {
+          "n": 102,
+          "applies": 0.9019607843137255,
+          "matches_pred": 0.7941176470588235,
+          "matches_gold": 0.7941176470588235,
+          "class_acc_pred": 0.803921568627451,
+          "class_acc_gold": 0.7941176470588235,
+          "kappa_pred": 0.7379912663755459
+        },
+        "gold_irregular": {
+          "n": 18,
+          "applies": 0.8333333333333334,
+          "matches_pred": 0.8333333333333334,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.8888888888888888,
+          "class_acc_gold": 0.1111111111111111,
+          "kappa_pred": 0.8487394957983193
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 1.0,
+          "matches_pred": 1.0,
+          "matches_gold": 0.8478260869565217,
+          "class_acc_pred": 1.0,
+          "class_acc_gold": 0.8478260869565217,
+          "kappa_pred": 1.0
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 0.4444444444444444,
+          "matches_pred": 0.4444444444444444,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.6666666666666666,
+          "class_acc_gold": 0.2222222222222222,
+          "kappa_pred": 0.5344827586206896
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 0.5789473684210527,
+          "matches_pred": 0.0,
+          "matches_gold": 0.15789473684210525,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.15789473684210525,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 1.0,
+            "guessed": 51
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 1.0,
+            "guessed": 32
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 1.0,
+            "guessed": 17
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 1.0,
+            "guessed": 4
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 1.0,
+            "guessed": 13
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.25,
+            "guessed": 1
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 46
+          },
+          "reg_t": {
+            "reg_t": 30
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 16
+          },
+          "no_change": {
+            "no_change": 3
+          },
+          "vowel_change": {
+            "vowel_change": 2
+          },
+          "vowel_change_suffix": {
+            "vowel_change": 3,
+            "vowel_change_suffix": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "vowel_change": 8,
+            "rhyme_replaced": 1,
+            "no_change": 1,
+            "reg_d": 5,
+            "reg_\u0259d": 1,
+            "reg_t": 2,
+            "coda_change": 1
+          }
         }
       },
       "string": {
         "all": {
           "n": 120,
-          "applies": 0.9416666666666667,
-          "matches_pred": 0.525,
-          "matches_gold": 0.5833333333333334
+          "applies": 0.95,
+          "matches_pred": 0.5583333333333333,
+          "matches_gold": 0.5916666666666667,
+          "class_acc_pred": 0.5666666666666667,
+          "class_acc_gold": 0.6166666666666667,
+          "kappa_pred": 0.41818181818181815
         },
-        "regular": {
+        "gold_regular": {
           "n": 102,
-          "applies": 0.9607843137254902,
-          "matches_pred": 0.5588235294117647,
-          "matches_gold": 0.6764705882352942
+          "applies": 0.9705882352941176,
+          "matches_pred": 0.5882352941176471,
+          "matches_gold": 0.696078431372549,
+          "class_acc_pred": 0.5882352941176471,
+          "class_acc_gold": 0.696078431372549,
+          "kappa_pred": 0.44701174648250935
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 18,
           "applies": 0.8333333333333334,
-          "matches_pred": 0.3333333333333333,
-          "matches_gold": 0.05555555555555555
+          "matches_pred": 0.3888888888888889,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.4444444444444444,
+          "class_acc_gold": 0.16666666666666666,
+          "kappa_pred": 0.23404255319148934
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 0.967391304347826,
+          "matches_pred": 0.7065217391304348,
+          "matches_gold": 0.6413043478260869,
+          "class_acc_pred": 0.7065217391304348,
+          "class_acc_gold": 0.6521739130434783,
+          "kappa_pred": 0.555952806578477
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 0.6666666666666666,
+          "matches_pred": 0.2222222222222222,
+          "matches_gold": 0.1111111111111111,
+          "class_acc_pred": 0.3333333333333333,
+          "class_acc_gold": 0.3333333333333333,
+          "kappa_pred": 0.22857142857142854
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.5789473684210527,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.5789473684210527,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 0.717391304347826,
+            "guessed": 52
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.7666666666666667,
+            "guessed": 34
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.5625,
+            "guessed": 14
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.3333333333333333,
+            "guessed": 3
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 1.0,
+            "guessed": 11
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 33,
+            "reg_t": 6,
+            "vowel_change_suffix": 2,
+            "no_change": 1,
+            "vowel_change": 3,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 23,
+            "vowel_change": 1,
+            "reg_\u0259d": 2,
+            "no_change": 1,
+            "reg_d": 2,
+            "coda_change": 1
+          },
+          "reg_\u0259d": {
+            "reg_d": 4,
+            "reg_\u0259d": 9,
+            "vowel_change": 1,
+            "reg_t": 1,
+            "coda_change": 1
+          },
+          "no_change": {
+            "no_change": 1,
+            "reg_d": 1,
+            "reg_t": 1
+          },
+          "vowel_change": {
+            "vowel_change": 2
+          },
+          "vowel_change_suffix": {
+            "vowel_change": 2,
+            "rhyme_replaced": 1,
+            "reg_d": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "reg_d": 11,
+            "reg_t": 3,
+            "reg_\u0259d": 3,
+            "vowel_change": 2
+          }
+        }
+      },
+      "final": {
+        "all": {
+          "n": 120,
+          "applies": 0.975,
+          "matches_pred": 0.6833333333333333,
+          "matches_gold": 0.7166666666666667,
+          "class_acc_pred": 0.6833333333333333,
+          "class_acc_gold": 0.7166666666666667,
+          "kappa_pred": 0.5727136431784109
+        },
+        "gold_regular": {
+          "n": 102,
+          "applies": 0.9705882352941176,
+          "matches_pred": 0.6568627450980392,
+          "matches_gold": 0.8431372549019608,
+          "class_acc_pred": 0.6568627450980392,
+          "class_acc_gold": 0.8431372549019608,
+          "kappa_pred": 0.541190078396093
+        },
+        "gold_irregular": {
+          "n": 18,
+          "applies": 1.0,
+          "matches_pred": 0.8333333333333334,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.8333333333333334,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.7567567567567569
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 0.967391304347826,
+          "matches_pred": 0.8695652173913043,
+          "matches_gold": 0.717391304347826,
+          "class_acc_pred": 0.8695652173913043,
+          "class_acc_gold": 0.717391304347826,
+          "kappa_pred": 0.8004338394793927
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 1.0,
+          "matches_pred": 0.2222222222222222,
+          "matches_gold": 0.5555555555555556,
+          "class_acc_pred": 0.2222222222222222,
+          "class_acc_gold": 0.5555555555555556,
+          "kappa_pred": 0.17105263157894737
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.7894736842105263,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.7894736842105263,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 0.9130434782608695,
+            "guessed": 54
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.9333333333333333,
+            "guessed": 31
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.625,
+            "guessed": 18
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.3333333333333333,
+            "guessed": 4
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.5,
+            "guessed": 7
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 5
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 42,
+            "coda_change": 1,
+            "vowel_change": 3
+          },
+          "reg_t": {
+            "coda_change": 1,
+            "reg_t": 28,
+            "rhyme_replaced": 1
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 10,
+            "coda_change": 3,
+            "no_change": 1,
+            "vowel_change": 2
+          },
+          "no_change": {
+            "no_change": 1,
+            "reg_\u0259d": 2
+          },
+          "vowel_change": {
+            "reg_d": 1,
+            "vowel_change": 1
+          },
+          "vowel_change_suffix": {
+            "reg_d": 3,
+            "reg_t": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "reg_\u0259d": 6,
+            "reg_d": 8,
+            "reg_t": 2,
+            "no_change": 2,
+            "vowel_change": 1
+          }
+        }
+      },
+      "majority": {
+        "all": {
+          "n": 120,
+          "applies": 1.0,
+          "matches_pred": 0.38333333333333336,
+          "matches_gold": 0.425,
+          "class_acc_pred": 0.38333333333333336,
+          "class_acc_gold": 0.425,
+          "kappa_pred": 0.0
+        },
+        "gold_regular": {
+          "n": 102,
+          "applies": 1.0,
+          "matches_pred": 0.37254901960784315,
+          "matches_gold": 0.5,
+          "class_acc_pred": 0.37254901960784315,
+          "class_acc_gold": 0.5,
+          "kappa_pred": 0.0
+        },
+        "gold_irregular": {
+          "n": 18,
+          "applies": 1.0,
+          "matches_pred": 0.4444444444444444,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.4444444444444444,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 1.0,
+          "matches_pred": 0.5,
+          "matches_gold": 0.41304347826086957,
+          "class_acc_pred": 0.5,
+          "class_acc_gold": 0.41304347826086957,
+          "kappa_pred": 0.0
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.3333333333333333,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.3333333333333333,
+          "kappa_pred": 0.0
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.5263157894736842,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.5263157894736842,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 1.0,
+            "guessed": 120
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 46
+          },
+          "reg_t": {
+            "reg_d": 30
+          },
+          "reg_\u0259d": {
+            "reg_d": 16
+          },
+          "no_change": {
+            "reg_d": 3
+          },
+          "vowel_change": {
+            "reg_d": 2
+          },
+          "vowel_change_suffix": {
+            "reg_d": 4
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "reg_d": 19
+          }
         }
       },
       "random": {
         "all": {
           "n": 120,
-          "applies": 0.9,
-          "matches_pred": 0.275,
-          "matches_gold": 0.275
+          "applies": 0.9166666666666666,
+          "matches_pred": 0.2833333333333333,
+          "matches_gold": 0.275,
+          "class_acc_pred": 0.2833333333333333,
+          "class_acc_gold": 0.2916666666666667,
+          "kappa_pred": 0.01016689046614224
         },
-        "regular": {
+        "gold_regular": {
           "n": 102,
-          "applies": 0.9117647058823529,
-          "matches_pred": 0.2549019607843137,
-          "matches_gold": 0.3235294117647059
+          "applies": 0.9313725490196079,
+          "matches_pred": 0.2647058823529412,
+          "matches_gold": 0.3235294117647059,
+          "class_acc_pred": 0.2647058823529412,
+          "class_acc_gold": 0.3235294117647059,
+          "kappa_pred": -0.015262110152621097
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 18,
           "applies": 0.8333333333333334,
           "matches_pred": 0.3888888888888889,
-          "matches_gold": 0.0
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.3888888888888889,
+          "class_acc_gold": 0.1111111111111111,
+          "kappa_pred": 0.14655172413793105
+        },
+        "pred_regular": {
+          "n": 92,
+          "applies": 0.9130434782608695,
+          "matches_pred": 0.3695652173913043,
+          "matches_gold": 0.29347826086956524,
+          "class_acc_pred": 0.3695652173913043,
+          "class_acc_gold": 0.31521739130434784,
+          "kappa_pred": 0.021635496883021625
+        },
+        "pred_irregular": {
+          "n": 9,
+          "applies": 0.7777777777777778,
+          "matches_pred": 0.0,
+          "matches_gold": 0.1111111111111111,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.1111111111111111,
+          "kappa_pred": -0.125
+        },
+        "pred_other": {
+          "n": 19,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.2631578947368421,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.2631578947368421,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 46,
+            "recall": 0.5434782608695652,
+            "guessed": 59
+          },
+          "reg_t": {
+            "n": 30,
+            "recall": 0.23333333333333334,
+            "guessed": 34
+          },
+          "reg_\u0259d": {
+            "n": 16,
+            "recall": 0.125,
+            "guessed": 13
+          },
+          "no_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 4
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 6
+          },
+          "vowel_change_suffix": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "rhyme_replaced": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 0,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "other": {
+            "n": 19,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_\u0259d": 4,
+            "no_change": 2,
+            "reg_t": 13,
+            "reg_d": 25,
+            "vowel_change": 2
+          },
+          "reg_t": {
+            "reg_d": 14,
+            "rhyme_replaced": 1,
+            "reg_\u0259d": 4,
+            "reg_t": 7,
+            "vowel_change": 1,
+            "vowel_change_suffix": 1,
+            "no_change": 1,
+            "coda_change": 1
+          },
+          "reg_\u0259d": {
+            "reg_t": 6,
+            "reg_d": 6,
+            "reg_\u0259d": 2,
+            "vowel_change": 2
+          },
+          "no_change": {
+            "reg_t": 2,
+            "reg_d": 1
+          },
+          "vowel_change": {
+            "vowel_change_suffix": 1,
+            "reg_\u0259d": 1
+          },
+          "vowel_change_suffix": {
+            "reg_d": 1,
+            "vowel_change": 1,
+            "reg_t": 1,
+            "no_change": 1
+          },
+          "rhyme_replaced": {},
+          "coda_change": {},
+          "other": {
+            "reg_d": 12,
+            "reg_t": 5,
+            "reg_\u0259d": 2
+          }
         }
       }
     },
@@ -134,101 +1167,1216 @@
       "model_sep": {
         "all": {
           "n": 300,
-          "applies": 0.96,
-          "matches_pred": 0.20333333333333334,
-          "matches_gold": 0.4633333333333333
+          "applies": 0.9566666666666667,
+          "matches_pred": 0.2733333333333333,
+          "matches_gold": 0.46,
+          "class_acc_pred": 0.2733333333333333,
+          "class_acc_gold": 0.46,
+          "kappa_pred": 0.0997687479352494
         },
-        "regular": {
+        "gold_regular": {
           "n": 293,
-          "applies": 0.962457337883959,
-          "matches_pred": 0.20819112627986347,
-          "matches_gold": 0.47440273037542663
+          "applies": 0.9590443686006825,
+          "matches_pred": 0.27303754266211605,
+          "matches_gold": 0.4709897610921502,
+          "class_acc_pred": 0.27303754266211605,
+          "class_acc_gold": 0.4709897610921502,
+          "kappa_pred": 0.09805763505506256
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 7,
           "applies": 0.8571428571428571,
+          "matches_pred": 0.2857142857142857,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.2857142857142857,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.18604651162790697
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.9328859060402684,
+          "matches_pred": 0.5503355704697986,
+          "matches_gold": 0.5234899328859061,
+          "class_acc_pred": 0.5503355704697986,
+          "class_acc_gold": 0.5234899328859061,
+          "kappa_pred": 0.2985032675145808
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 1.0,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.6,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.6,
+          "kappa_pred": 0.0
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.9770992366412213,
+          "matches_pred": 0.0,
+          "matches_gold": 0.366412213740458,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.366412213740458,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.6125,
+            "guessed": 158
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.5526315789473685,
+            "guessed": 58
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.3870967741935484,
+            "guessed": 71
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 7
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 2
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "rhyme_replaced": 1,
+            "reg_d": 49,
+            "reg_\u0259d": 14,
+            "reg_t": 13,
+            "vowel_change": 3
+          },
+          "reg_t": {
+            "reg_t": 21,
+            "reg_d": 9,
+            "coda_change": 2,
+            "reg_\u0259d": 4,
+            "other": 1,
+            "vowel_change": 1
+          },
+          "reg_\u0259d": {
+            "reg_t": 6,
+            "reg_\u0259d": 12,
+            "reg_d": 11,
+            "vowel_change_suffix": 1,
+            "other": 1
+          },
+          "no_change": {
+            "reg_\u0259d": 2
+          },
+          "vowel_change": {
+            "reg_t": 1,
+            "reg_d": 2,
+            "reg_\u0259d": 1
+          },
+          "vowel_change_suffix": {
+            "reg_\u0259d": 2,
+            "reg_d": 2,
+            "reg_t": 2
+          },
+          "rhyme_replaced": {
+            "reg_\u0259d": 1,
+            "reg_d": 3,
+            "reg_t": 1
+          },
+          "coda_change": {
+            "reg_\u0259d": 2,
+            "reg_t": 1
+          },
+          "other": {
+            "reg_d": 82,
+            "reg_\u0259d": 33,
+            "reg_t": 13,
+            "vowel_change": 3
+          }
         }
       },
       "model_mean": {
         "all": {
           "n": 300,
-          "applies": 0.9066666666666666,
-          "matches_pred": 0.21666666666666667,
-          "matches_gold": 0.4033333333333333
+          "applies": 0.9266666666666666,
+          "matches_pred": 0.25333333333333335,
+          "matches_gold": 0.42,
+          "class_acc_pred": 0.25666666666666665,
+          "class_acc_gold": 0.42,
+          "kappa_pred": 0.08885378078012637
         },
-        "regular": {
+        "gold_regular": {
           "n": 293,
-          "applies": 0.9078498293515358,
-          "matches_pred": 0.22184300341296928,
-          "matches_gold": 0.4129692832764505
+          "applies": 0.9283276450511946,
+          "matches_pred": 0.25597269624573377,
+          "matches_gold": 0.4300341296928328,
+          "class_acc_pred": 0.2593856655290102,
+          "class_acc_gold": 0.4300341296928328,
+          "kappa_pred": 0.09157022431775962
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 7,
           "applies": 0.8571428571428571,
+          "matches_pred": 0.14285714285714285,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.14285714285714285,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.04545454545454544
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.9530201342281879,
+          "matches_pred": 0.5100671140939598,
+          "matches_gold": 0.4899328859060403,
+          "class_acc_pred": 0.5100671140939598,
+          "class_acc_gold": 0.4899328859060403,
+          "kappa_pred": 0.2074468085106383
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 0.9,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.35,
+          "class_acc_pred": 0.05,
+          "class_acc_gold": 0.35,
+          "kappa_pred": 0.025641025641025644
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.9007633587786259,
+          "matches_pred": 0.0,
+          "matches_gold": 0.3511450381679389,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.3511450381679389,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.625,
+            "guessed": 150
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.47368421052631576,
+            "guessed": 63
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.25806451612903225,
+            "guessed": 63
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 13
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.16666666666666666,
+            "guessed": 4
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 1
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_t": 14,
+            "reg_d": 50,
+            "reg_\u0259d": 12,
+            "vowel_change": 3,
+            "no_change": 1
+          },
+          "reg_t": {
+            "reg_t": 18,
+            "reg_d": 14,
+            "coda_change": 1,
+            "reg_\u0259d": 3,
+            "vowel_change": 2
+          },
+          "reg_\u0259d": {
+            "reg_d": 15,
+            "reg_t": 6,
+            "reg_\u0259d": 8,
+            "other": 1,
+            "no_change": 1
+          },
+          "no_change": {
+            "reg_t": 2
+          },
+          "vowel_change": {
+            "reg_\u0259d": 1,
+            "reg_d": 3
+          },
+          "vowel_change_suffix": {
+            "reg_t": 2,
+            "vowel_change_suffix": 1,
+            "reg_d": 2,
+            "vowel_change": 1
+          },
+          "rhyme_replaced": {
+            "reg_d": 3,
+            "reg_t": 1,
+            "reg_\u0259d": 1
+          },
+          "coda_change": {
+            "reg_\u0259d": 1,
+            "reg_d": 2
+          },
+          "other": {
+            "reg_\u0259d": 37,
+            "reg_t": 20,
+            "reg_d": 61,
+            "vowel_change": 7,
+            "rhyme_replaced": 3,
+            "vowel_change_suffix": 3
+          }
         }
       },
       "model_stem": {
         "all": {
           "n": 300,
-          "applies": 0.95,
-          "matches_pred": 0.4,
-          "matches_gold": 0.88
+          "applies": 0.9633333333333334,
+          "matches_pred": 0.47,
+          "matches_gold": 0.89,
+          "class_acc_pred": 0.4766666666666667,
+          "class_acc_gold": 0.89,
+          "kappa_pred": 0.36450968751686547
         },
-        "regular": {
+        "gold_regular": {
           "n": 293,
-          "applies": 0.9488054607508533,
-          "matches_pred": 0.40273037542662116,
-          "matches_gold": 0.9010238907849829
+          "applies": 0.962457337883959,
+          "matches_pred": 0.47440273037542663,
+          "matches_gold": 0.9112627986348123,
+          "class_acc_pred": 0.4812286689419795,
+          "class_acc_gold": 0.9112627986348123,
+          "kappa_pred": 0.36928567382314625
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 7,
           "applies": 1.0,
           "matches_pred": 0.2857142857142857,
-          "matches_gold": 0.0
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.2857142857142857,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.125
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.959731543624161,
+          "matches_pred": 0.9328859060402684,
+          "matches_gold": 0.9060402684563759,
+          "class_acc_pred": 0.9328859060402684,
+          "class_acc_gold": 0.9060402684563759,
+          "kappa_pred": 0.8932511821177821
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 0.9,
+          "matches_pred": 0.1,
+          "matches_gold": 0.7,
+          "class_acc_pred": 0.2,
+          "class_acc_gold": 0.7,
+          "kappa_pred": 0.15343915343915346
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.9770992366412213,
+          "matches_pred": 0.0,
+          "matches_gold": 0.9007633587786259,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.9007633587786259,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.9375,
+            "guessed": 135
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.9736842105263158,
+            "guessed": 53
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.8709677419354839,
+            "guessed": 88
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.5,
+            "guessed": 7
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.5,
+            "guessed": 11
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.16666666666666666,
+            "guessed": 2
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 2
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 75,
+            "vowel_change_suffix": 1,
+            "vowel_change": 4
+          },
+          "reg_t": {
+            "reg_t": 37,
+            "rhyme_replaced": 1
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 27,
+            "other": 2,
+            "vowel_change": 2
+          },
+          "no_change": {
+            "vowel_change": 1,
+            "no_change": 1
+          },
+          "vowel_change": {
+            "vowel_change": 2,
+            "reg_d": 1,
+            "no_change": 1
+          },
+          "vowel_change_suffix": {
+            "reg_t": 3,
+            "reg_d": 2,
+            "vowel_change_suffix": 1
+          },
+          "rhyme_replaced": {
+            "reg_t": 1,
+            "reg_d": 4
+          },
+          "coda_change": {
+            "reg_\u0259d": 3
+          },
+          "other": {
+            "reg_d": 53,
+            "reg_\u0259d": 58,
+            "reg_t": 12,
+            "vowel_change": 2,
+            "no_change": 5,
+            "rhyme_replaced": 1
+          }
+        }
+      },
+      "model_decision": {
+        "all": {
+          "n": 300,
+          "applies": 0.8366666666666667,
+          "matches_pred": 0.49666666666666665,
+          "matches_gold": 0.5666666666666667,
+          "class_acc_pred": 0.51,
+          "class_acc_gold": 0.57,
+          "kappa_pred": 0.4236876151644646
+        },
+        "gold_regular": {
+          "n": 293,
+          "applies": 0.8430034129692833,
+          "matches_pred": 0.5017064846416383,
+          "matches_gold": 0.5767918088737202,
+          "class_acc_pred": 0.515358361774744,
+          "class_acc_gold": 0.5767918088737202,
+          "kappa_pred": 0.42817482133040136
+        },
+        "gold_irregular": {
+          "n": 7,
+          "applies": 0.5714285714285714,
+          "matches_pred": 0.2857142857142857,
+          "matches_gold": 0.14285714285714285,
+          "class_acc_pred": 0.2857142857142857,
+          "class_acc_gold": 0.2857142857142857,
+          "kappa_pred": 0.23913043478260865
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.9932885906040269,
+          "matches_pred": 0.9865771812080537,
+          "matches_gold": 0.9664429530201343,
+          "class_acc_pred": 0.9865771812080537,
+          "class_acc_gold": 0.9664429530201343,
+          "kappa_pred": 0.9779373658103206
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 0.5,
+          "matches_pred": 0.1,
+          "matches_gold": 0.05,
+          "class_acc_pred": 0.3,
+          "class_acc_gold": 0.05,
+          "kappa_pred": 0.1907514450867052
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.7099236641221374,
+          "matches_pred": 0.0,
+          "matches_gold": 0.19083969465648856,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.1984732824427481,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.9875,
+            "guessed": 109
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 1.0,
+            "guessed": 70
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.967741935483871,
+            "guessed": 60
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.5,
+            "guessed": 11
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.5,
+            "guessed": 25
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.3333333333333333,
+            "guessed": 8
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 9
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.3333333333333333,
+            "guessed": 8
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 79,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 38
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 30,
+            "no_change": 1
+          },
+          "no_change": {
+            "reg_d": 1,
+            "no_change": 1
+          },
+          "vowel_change": {
+            "vowel_change": 2,
+            "vowel_change_suffix": 1,
+            "reg_t": 1
+          },
+          "vowel_change_suffix": {
+            "reg_\u0259d": 1,
+            "reg_t": 1,
+            "vowel_change_suffix": 2,
+            "rhyme_replaced": 1,
+            "vowel_change": 1
+          },
+          "rhyme_replaced": {
+            "reg_d": 1,
+            "vowel_change": 2,
+            "reg_\u0259d": 1,
+            "vowel_change_suffix": 1
+          },
+          "coda_change": {
+            "coda_change": 1,
+            "reg_d": 2
+          },
+          "other": {
+            "vowel_change": 20,
+            "reg_\u0259d": 28,
+            "reg_t": 30,
+            "rhyme_replaced": 8,
+            "reg_d": 26,
+            "no_change": 9,
+            "coda_change": 6,
+            "vowel_change_suffix": 4
+          }
         }
       },
       "string": {
         "all": {
           "n": 300,
           "applies": 0.9366666666666666,
-          "matches_pred": 0.2966666666666667,
-          "matches_gold": 0.6566666666666666
+          "matches_pred": 0.3333333333333333,
+          "matches_gold": 0.65,
+          "class_acc_pred": 0.33666666666666667,
+          "class_acc_gold": 0.65,
+          "kappa_pred": 0.19746199034803533
         },
-        "regular": {
+        "gold_regular": {
           "n": 293,
           "applies": 0.9351535836177475,
-          "matches_pred": 0.29692832764505117,
-          "matches_gold": 0.6655290102389079
+          "matches_pred": 0.33447098976109213,
+          "matches_gold": 0.6621160409556314,
+          "class_acc_pred": 0.3378839590443686,
+          "class_acc_gold": 0.6621160409556314,
+          "kappa_pred": 0.19703347930498655
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 7,
           "applies": 1.0,
           "matches_pred": 0.2857142857142857,
-          "matches_gold": 0.2857142857142857
+          "matches_gold": 0.14285714285714285,
+          "class_acc_pred": 0.2857142857142857,
+          "class_acc_gold": 0.14285714285714285,
+          "kappa_pred": 0.18604651162790697
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.9463087248322147,
+          "matches_pred": 0.6711409395973155,
+          "matches_gold": 0.6644295302013423,
+          "class_acc_pred": 0.6711409395973155,
+          "class_acc_gold": 0.6644295302013423,
+          "kappa_pred": 0.4822353024608184
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 0.85,
+          "matches_pred": 0.0,
+          "matches_gold": 0.65,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.65,
+          "kappa_pred": -0.030927835051546393
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.9389312977099237,
+          "matches_pred": 0.0,
+          "matches_gold": 0.6335877862595419,
+          "class_acc_pred": 0.007633587786259542,
+          "class_acc_gold": 0.6335877862595419,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.725,
+            "guessed": 130
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.7368421052631579,
+            "guessed": 64
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.45161290322580644,
+            "guessed": 78
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 6
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 14
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.007633587786259542,
+            "guessed": 2
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 58,
+            "reg_\u0259d": 10,
+            "vowel_change_suffix": 1,
+            "reg_t": 9,
+            "vowel_change": 2
+          },
+          "reg_t": {
+            "reg_t": 28,
+            "reg_d": 8,
+            "coda_change": 1,
+            "no_change": 1
+          },
+          "reg_\u0259d": {
+            "reg_d": 6,
+            "reg_\u0259d": 14,
+            "other": 1,
+            "vowel_change": 1,
+            "vowel_change_suffix": 2,
+            "reg_t": 5,
+            "rhyme_replaced": 1,
+            "no_change": 1
+          },
+          "no_change": {
+            "vowel_change": 2
+          },
+          "vowel_change": {
+            "reg_d": 3,
+            "reg_\u0259d": 1
+          },
+          "vowel_change_suffix": {
+            "reg_t": 3,
+            "reg_d": 3
+          },
+          "rhyme_replaced": {
+            "reg_d": 3,
+            "reg_\u0259d": 1,
+            "reg_t": 1
+          },
+          "coda_change": {
+            "reg_d": 1,
+            "vowel_change": 1,
+            "reg_\u0259d": 1
+          },
+          "other": {
+            "reg_d": 48,
+            "reg_\u0259d": 51,
+            "no_change": 4,
+            "vowel_change": 8,
+            "rhyme_replaced": 1,
+            "reg_t": 18,
+            "other": 1
+          }
+        }
+      },
+      "final": {
+        "all": {
+          "n": 300,
+          "applies": 0.9,
+          "matches_pred": 0.42,
+          "matches_gold": 0.7966666666666666,
+          "class_acc_pred": 0.42333333333333334,
+          "class_acc_gold": 0.7966666666666666,
+          "kappa_pred": 0.31380974416606067
+        },
+        "gold_regular": {
+          "n": 293,
+          "applies": 0.8976109215017065,
+          "matches_pred": 0.4197952218430034,
+          "matches_gold": 0.8156996587030717,
+          "class_acc_pred": 0.4232081911262799,
+          "class_acc_gold": 0.8156996587030717,
+          "kappa_pred": 0.31317964935641374
+        },
+        "gold_irregular": {
+          "n": 7,
+          "applies": 1.0,
+          "matches_pred": 0.42857142857142855,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.42857142857142855,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.26315789473684215
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.9194630872483222,
+          "matches_pred": 0.8456375838926175,
+          "matches_gold": 0.8389261744966443,
+          "class_acc_pred": 0.8456375838926175,
+          "class_acc_gold": 0.8389261744966443,
+          "kappa_pred": 0.7626566936768474
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 0.9,
+          "matches_pred": 0.0,
+          "matches_gold": 0.75,
+          "class_acc_pred": 0.05,
+          "class_acc_gold": 0.75,
+          "kappa_pred": 0.012987012987012991
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.8778625954198473,
+          "matches_pred": 0.0,
+          "matches_gold": 0.7557251908396947,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.7557251908396947,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.8875,
+            "guessed": 125
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.9736842105263158,
+            "guessed": 55
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.5806451612903226,
+            "guessed": 67
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 12
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.25,
+            "guessed": 31
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.0,
+            "guessed": 6
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 71,
+            "vowel_change_suffix": 2,
+            "reg_t": 1,
+            "vowel_change": 5,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 37,
+            "vowel_change": 1
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 18,
+            "vowel_change": 8,
+            "no_change": 4,
+            "reg_d": 1
+          },
+          "no_change": {
+            "vowel_change": 1,
+            "reg_\u0259d": 1
+          },
+          "vowel_change": {
+            "reg_d": 2,
+            "vowel_change": 1,
+            "coda_change": 1
+          },
+          "vowel_change_suffix": {
+            "reg_t": 3,
+            "reg_d": 3
+          },
+          "rhyme_replaced": {
+            "reg_t": 1,
+            "reg_d": 3,
+            "reg_\u0259d": 1
+          },
+          "coda_change": {
+            "vowel_change": 1,
+            "reg_\u0259d": 2
+          },
+          "other": {
+            "reg_d": 45,
+            "reg_\u0259d": 45,
+            "vowel_change": 14,
+            "reg_t": 13,
+            "no_change": 8,
+            "vowel_change_suffix": 4,
+            "rhyme_replaced": 1,
+            "coda_change": 1
+          }
+        }
+      },
+      "majority": {
+        "all": {
+          "n": 300,
+          "applies": 1.0,
+          "matches_pred": 0.26666666666666666,
+          "matches_gold": 0.47333333333333333,
+          "class_acc_pred": 0.26666666666666666,
+          "class_acc_gold": 0.47333333333333333,
+          "kappa_pred": 0.0
+        },
+        "gold_regular": {
+          "n": 293,
+          "applies": 1.0,
+          "matches_pred": 0.2696245733788396,
+          "matches_gold": 0.48464163822525597,
+          "class_acc_pred": 0.2696245733788396,
+          "class_acc_gold": 0.48464163822525597,
+          "kappa_pred": 0.0
+        },
+        "gold_irregular": {
+          "n": 7,
+          "applies": 1.0,
+          "matches_pred": 0.14285714285714285,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.14285714285714285,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 1.0,
+          "matches_pred": 0.5369127516778524,
+          "matches_gold": 0.5302013422818792,
+          "class_acc_pred": 0.5369127516778524,
+          "class_acc_gold": 0.5302013422818792,
+          "kappa_pred": 0.0
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.55,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.55,
+          "kappa_pred": 0.0
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.3969465648854962,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.3969465648854962,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 1.0,
+            "guessed": 300
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 80
+          },
+          "reg_t": {
+            "reg_d": 38
+          },
+          "reg_\u0259d": {
+            "reg_d": 31
+          },
+          "no_change": {
+            "reg_d": 2
+          },
+          "vowel_change": {
+            "reg_d": 4
+          },
+          "vowel_change_suffix": {
+            "reg_d": 6
+          },
+          "rhyme_replaced": {
+            "reg_d": 5
+          },
+          "coda_change": {
+            "reg_d": 3
+          },
+          "other": {
+            "reg_d": 131
+          }
         }
       },
       "random": {
         "all": {
           "n": 300,
-          "applies": 0.8733333333333333,
-          "matches_pred": 0.12333333333333334,
-          "matches_gold": 0.25666666666666665
+          "applies": 0.8933333333333333,
+          "matches_pred": 0.14333333333333334,
+          "matches_gold": 0.27,
+          "class_acc_pred": 0.14666666666666667,
+          "class_acc_gold": 0.27,
+          "kappa_pred": -0.031038556546020852
         },
-        "regular": {
+        "gold_regular": {
           "n": 293,
-          "applies": 0.8703071672354948,
-          "matches_pred": 0.12627986348122866,
-          "matches_gold": 0.2627986348122867
+          "applies": 0.8907849829351536,
+          "matches_pred": 0.14334470989761092,
+          "matches_gold": 0.2764505119453925,
+          "class_acc_pred": 0.14675767918088736,
+          "class_acc_gold": 0.2764505119453925,
+          "kappa_pred": -0.03263551138366114
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 7,
           "applies": 1.0,
+          "matches_pred": 0.14285714285714285,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.14285714285714285,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.045454545454545456
+        },
+        "pred_regular": {
+          "n": 149,
+          "applies": 0.8791946308724832,
+          "matches_pred": 0.28859060402684567,
+          "matches_gold": 0.28859060402684567,
+          "class_acc_pred": 0.28859060402684567,
+          "class_acc_gold": 0.28859060402684567,
+          "kappa_pred": -0.05900496178087701
+        },
+        "pred_irregular": {
+          "n": 20,
+          "applies": 0.95,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.3,
+          "class_acc_pred": 0.05,
+          "class_acc_gold": 0.3,
+          "kappa_pred": 0.03553299492385787
+        },
+        "pred_other": {
+          "n": 131,
+          "applies": 0.9007633587786259,
+          "matches_pred": 0.0,
+          "matches_gold": 0.24427480916030533,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.24427480916030533,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 80,
+            "recall": 0.3875,
+            "guessed": 138
+          },
+          "reg_t": {
+            "n": 38,
+            "recall": 0.15789473684210525,
+            "guessed": 81
+          },
+          "reg_\u0259d": {
+            "n": 31,
+            "recall": 0.1935483870967742,
+            "guessed": 40
+          },
+          "no_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 9
+          },
+          "vowel_change": {
+            "n": 4,
+            "recall": 0.25,
+            "guessed": 22
+          },
+          "vowel_change_suffix": {
+            "n": 6,
+            "recall": 0.0,
+            "guessed": 4
+          },
+          "rhyme_replaced": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "coda_change": {
+            "n": 3,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "other": {
+            "n": 131,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "rhyme_replaced": 1,
+            "no_change": 4,
+            "reg_t": 19,
+            "reg_\u0259d": 14,
+            "reg_d": 31,
+            "vowel_change_suffix": 4,
+            "vowel_change": 6,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 6,
+            "reg_d": 21,
+            "vowel_change": 4,
+            "reg_\u0259d": 7
+          },
+          "reg_\u0259d": {
+            "reg_t": 10,
+            "reg_d": 12,
+            "vowel_change": 1,
+            "reg_\u0259d": 6,
+            "no_change": 1,
+            "coda_change": 1
+          },
+          "no_change": {
+            "reg_\u0259d": 2
+          },
+          "vowel_change": {
+            "reg_t": 1,
+            "reg_d": 2,
+            "vowel_change": 1
+          },
+          "vowel_change_suffix": {
+            "reg_d": 4,
+            "reg_t": 1,
+            "no_change": 1
+          },
+          "rhyme_replaced": {
+            "reg_d": 3,
+            "reg_\u0259d": 1,
+            "reg_t": 1
+          },
+          "coda_change": {
+            "reg_t": 2,
+            "reg_d": 1
+          },
+          "other": {
+            "reg_\u0259d": 10,
+            "reg_t": 41,
+            "reg_d": 64,
+            "vowel_change": 10,
+            "coda_change": 1,
+            "rhyme_replaced": 2,
+            "no_change": 3
+          }
         }
       }
     },
@@ -236,101 +2384,1230 @@
       "model_sep": {
         "all": {
           "n": 300,
-          "applies": 0.93,
-          "matches_pred": 0.17,
-          "matches_gold": 0.39
+          "applies": 0.9366666666666666,
+          "matches_pred": 0.19666666666666666,
+          "matches_gold": 0.4,
+          "class_acc_pred": 0.2,
+          "class_acc_gold": 0.4,
+          "kappa_pred": 0.022973688138629177
         },
-        "regular": {
+        "gold_regular": {
           "n": 296,
-          "applies": 0.9290540540540541,
-          "matches_pred": 0.17229729729729729,
-          "matches_gold": 0.3952702702702703
+          "applies": 0.9358108108108109,
+          "matches_pred": 0.19932432432432431,
+          "matches_gold": 0.40540540540540543,
+          "class_acc_pred": 0.20270270270270271,
+          "class_acc_gold": 0.40540540540540543,
+          "kappa_pred": 0.025935635004740883
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 4,
           "applies": 1.0,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 0.9117647058823529,
+          "matches_pred": 0.4338235294117647,
+          "matches_gold": 0.4264705882352941,
+          "class_acc_pred": 0.4338235294117647,
+          "class_acc_gold": 0.4264705882352941,
+          "kappa_pred": 0.10959952385001272
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 0.8571428571428571,
+          "matches_pred": 0.0,
+          "matches_gold": 0.5,
+          "class_acc_pred": 0.03571428571428571,
+          "class_acc_gold": 0.5,
+          "kappa_pred": 0.02827763496143959
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.9779411764705882,
+          "matches_pred": 0.0,
+          "matches_gold": 0.35294117647058826,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.35294117647058826,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 0.46987951807228917,
+            "guessed": 153
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 0.2916666666666667,
+            "guessed": 55
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.4482758620689655,
+            "guessed": 72
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.5,
+            "guessed": 14
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 1
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 1
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_t": 25,
+            "rhyme_replaced": 2,
+            "reg_d": 39,
+            "vowel_change": 5,
+            "reg_\u0259d": 11,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 7,
+            "reg_d": 13,
+            "vowel_change": 3,
+            "reg_\u0259d": 1
+          },
+          "reg_\u0259d": {
+            "reg_d": 10,
+            "reg_\u0259d": 13,
+            "vowel_change_suffix": 1,
+            "reg_t": 4,
+            "no_change": 1
+          },
+          "no_change": {
+            "reg_\u0259d": 1,
+            "reg_d": 1,
+            "reg_t": 2
+          },
+          "vowel_change": {
+            "vowel_change": 1,
+            "reg_t": 1
+          },
+          "vowel_change_suffix": {
+            "reg_\u0259d": 1,
+            "reg_d": 2,
+            "other": 1,
+            "vowel_change": 2,
+            "reg_t": 1
+          },
+          "rhyme_replaced": {
+            "reg_\u0259d": 3,
+            "reg_t": 1,
+            "reg_d": 6
+          },
+          "coda_change": {
+            "reg_d": 5
+          },
+          "other": {
+            "reg_\u0259d": 42,
+            "reg_d": 77,
+            "reg_t": 14,
+            "vowel_change": 3
+          }
         }
       },
       "model_mean": {
         "all": {
           "n": 300,
-          "applies": 0.8666666666666667,
-          "matches_pred": 0.19333333333333333,
-          "matches_gold": 0.42333333333333334
+          "applies": 0.9,
+          "matches_pred": 0.21333333333333335,
+          "matches_gold": 0.42333333333333334,
+          "class_acc_pred": 0.21666666666666667,
+          "class_acc_gold": 0.42333333333333334,
+          "kappa_pred": 0.04590483408217401
         },
-        "regular": {
+        "gold_regular": {
           "n": 296,
-          "applies": 0.8648648648648649,
-          "matches_pred": 0.19594594594594594,
-          "matches_gold": 0.42905405405405406
+          "applies": 0.8986486486486487,
+          "matches_pred": 0.21621621621621623,
+          "matches_gold": 0.42905405405405406,
+          "class_acc_pred": 0.2195945945945946,
+          "class_acc_gold": 0.42905405405405406,
+          "kappa_pred": 0.048059252659130115
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 4,
           "applies": 1.0,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 0.8823529411764706,
+          "matches_pred": 0.47058823529411764,
+          "matches_gold": 0.47058823529411764,
+          "class_acc_pred": 0.47058823529411764,
+          "class_acc_gold": 0.47058823529411764,
+          "kappa_pred": 0.1805857740585774
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 0.7857142857142857,
+          "matches_pred": 0.0,
+          "matches_gold": 0.39285714285714285,
+          "class_acc_pred": 0.03571428571428571,
+          "class_acc_gold": 0.39285714285714285,
+          "kappa_pred": -0.006657789613848202
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.9411764705882353,
+          "matches_pred": 0.0,
+          "matches_gold": 0.38235294117647056,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.38235294117647056,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 0.5421686746987951,
+            "guessed": 158
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 0.5,
+            "guessed": 62
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.2413793103448276,
+            "guessed": 47
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.5,
+            "guessed": 20
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 7
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_t": 19,
+            "reg_d": 45,
+            "rhyme_replaced": 2,
+            "vowel_change": 7,
+            "reg_\u0259d": 7,
+            "no_change": 2,
+            "vowel_change_suffix": 1
+          },
+          "reg_t": {
+            "reg_t": 12,
+            "reg_\u0259d": 2,
+            "reg_d": 5,
+            "vowel_change": 3,
+            "rhyme_replaced": 2
+          },
+          "reg_\u0259d": {
+            "reg_d": 12,
+            "reg_\u0259d": 7,
+            "reg_t": 8,
+            "vowel_change": 1,
+            "no_change": 1
+          },
+          "no_change": {
+            "vowel_change_suffix": 1,
+            "reg_d": 2,
+            "reg_t": 1
+          },
+          "vowel_change": {
+            "vowel_change": 1,
+            "reg_d": 1
+          },
+          "vowel_change_suffix": {
+            "reg_d": 3,
+            "vowel_change": 2,
+            "rhyme_replaced": 2
+          },
+          "rhyme_replaced": {
+            "reg_\u0259d": 2,
+            "reg_d": 7,
+            "reg_t": 1
+          },
+          "coda_change": {
+            "reg_\u0259d": 3,
+            "reg_d": 2
+          },
+          "other": {
+            "reg_\u0259d": 26,
+            "reg_d": 81,
+            "reg_t": 21,
+            "rhyme_replaced": 1,
+            "vowel_change": 6,
+            "vowel_change_suffix": 1
+          }
         }
       },
       "model_stem": {
         "all": {
           "n": 300,
-          "applies": 0.9366666666666666,
-          "matches_pred": 0.38666666666666666,
-          "matches_gold": 0.8633333333333333
+          "applies": 0.95,
+          "matches_pred": 0.43333333333333335,
+          "matches_gold": 0.86,
+          "class_acc_pred": 0.44,
+          "class_acc_gold": 0.86,
+          "kappa_pred": 0.3208645502075136
         },
-        "regular": {
+        "gold_regular": {
           "n": 296,
-          "applies": 0.9358108108108109,
-          "matches_pred": 0.3918918918918919,
-          "matches_gold": 0.875
+          "applies": 0.9493243243243243,
+          "matches_pred": 0.4358108108108108,
+          "matches_gold": 0.8716216216216216,
+          "class_acc_pred": 0.44256756756756754,
+          "class_acc_gold": 0.8716216216216216,
+          "kappa_pred": 0.3222032557558599
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 4,
           "applies": 1.0,
+          "matches_pred": 0.25,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.25,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.14285714285714285
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 0.9632352941176471,
+          "matches_pred": 0.9485294117647058,
+          "matches_gold": 0.9338235294117647,
+          "class_acc_pred": 0.9485294117647058,
+          "class_acc_gold": 0.9338235294117647,
+          "kappa_pred": 0.9097202465623517
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 0.9642857142857143,
+          "matches_pred": 0.03571428571428571,
+          "matches_gold": 0.7142857142857143,
+          "class_acc_pred": 0.10714285714285714,
+          "class_acc_gold": 0.7142857142857143,
+          "kappa_pred": 0.05913978494623655
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.9338235294117647,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.8161764705882353,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.8161764705882353,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 0.963855421686747,
+            "guessed": 147
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 0.9166666666666666,
+            "guessed": 40
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.9310344827586207,
+            "guessed": 86
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.25,
+            "guessed": 5
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 11
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.2857142857142857,
+            "guessed": 3
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 6
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 2
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 80,
+            "rhyme_replaced": 1,
+            "vowel_change": 2
+          },
+          "reg_t": {
+            "reg_t": 22,
+            "rhyme_replaced": 2
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 27,
+            "vowel_change": 2
+          },
+          "no_change": {
+            "coda_change": 2,
+            "vowel_change": 1,
+            "no_change": 1
+          },
+          "vowel_change": {
+            "reg_d": 1,
+            "reg_\u0259d": 1
+          },
+          "vowel_change_suffix": {
+            "vowel_change_suffix": 2,
+            "reg_d": 3,
+            "rhyme_replaced": 1,
+            "reg_t": 1
+          },
+          "rhyme_replaced": {
+            "reg_t": 1,
+            "reg_d": 8,
+            "reg_\u0259d": 1
+          },
+          "coda_change": {
+            "reg_\u0259d": 1,
+            "reg_d": 3,
+            "reg_t": 1
+          },
+          "other": {
+            "reg_d": 52,
+            "reg_\u0259d": 56,
+            "reg_t": 15,
+            "rhyme_replaced": 2,
+            "vowel_change": 6,
+            "no_change": 4,
+            "vowel_change_suffix": 1
+          }
+        }
+      },
+      "model_decision": {
+        "all": {
+          "n": 300,
+          "applies": 0.8033333333333333,
+          "matches_pred": 0.4633333333333333,
+          "matches_gold": 0.5566666666666666,
+          "class_acc_pred": 0.48333333333333334,
+          "class_acc_gold": 0.5566666666666666,
+          "kappa_pred": 0.39212507843547373
+        },
+        "gold_regular": {
+          "n": 296,
+          "applies": 0.8006756756756757,
+          "matches_pred": 0.46621621621621623,
+          "matches_gold": 0.5641891891891891,
+          "class_acc_pred": 0.4864864864864865,
+          "class_acc_gold": 0.5641891891891891,
+          "kappa_pred": 0.3951143437168094
+        },
+        "gold_irregular": {
+          "n": 4,
+          "applies": 1.0,
+          "matches_pred": 0.25,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.25,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.2
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 1.0,
+          "matches_pred": 1.0,
+          "matches_gold": 0.9852941176470589,
+          "class_acc_pred": 1.0,
+          "class_acc_gold": 0.9852941176470589,
+          "kappa_pred": 1.0
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 0.5357142857142857,
+          "matches_pred": 0.10714285714285714,
+          "matches_gold": 0.25,
+          "class_acc_pred": 0.32142857142857145,
+          "class_acc_gold": 0.25,
+          "kappa_pred": 0.2496473906911143
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.6617647058823529,
+          "matches_pred": 0.0,
+          "matches_gold": 0.19117647058823528,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.19117647058823528,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 1.0,
+            "guessed": 125
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 1.0,
+            "guessed": 53
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 1.0,
+            "guessed": 48
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.75,
+            "guessed": 12
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 1.0,
+            "guessed": 31
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.14285714285714285,
+            "guessed": 7
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.1,
+            "guessed": 11
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.4,
+            "guessed": 12
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 1
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 83
+          },
+          "reg_t": {
+            "reg_t": 24
+          },
+          "reg_\u0259d": {
+            "reg_\u0259d": 29
+          },
+          "no_change": {
+            "no_change": 3,
+            "reg_d": 1
+          },
+          "vowel_change": {
+            "vowel_change": 2
+          },
+          "vowel_change_suffix": {
+            "vowel_change": 4,
+            "other": 1,
+            "vowel_change_suffix": 1,
+            "rhyme_replaced": 1
+          },
+          "rhyme_replaced": {
+            "vowel_change_suffix": 1,
+            "reg_\u0259d": 2,
+            "reg_d": 3,
+            "vowel_change": 1,
+            "rhyme_replaced": 1,
+            "reg_t": 1,
+            "coda_change": 1
+          },
+          "coda_change": {
+            "reg_d": 3,
+            "coda_change": 2
+          },
+          "other": {
+            "rhyme_replaced": 9,
+            "reg_\u0259d": 17,
+            "reg_t": 28,
+            "vowel_change_suffix": 5,
+            "reg_d": 35,
+            "vowel_change": 24,
+            "coda_change": 9,
+            "no_change": 9
+          }
         }
       },
       "string": {
         "all": {
           "n": 300,
-          "applies": 0.9166666666666666,
-          "matches_pred": 0.26,
-          "matches_gold": 0.66
+          "applies": 0.92,
+          "matches_pred": 0.3,
+          "matches_gold": 0.6666666666666666,
+          "class_acc_pred": 0.31333333333333335,
+          "class_acc_gold": 0.6666666666666666,
+          "kappa_pred": 0.17281257110733364
         },
-        "regular": {
+        "gold_regular": {
           "n": 296,
-          "applies": 0.9155405405405406,
-          "matches_pred": 0.2635135135135135,
-          "matches_gold": 0.6655405405405406
+          "applies": 0.918918918918919,
+          "matches_pred": 0.30405405405405406,
+          "matches_gold": 0.6722972972972973,
+          "class_acc_pred": 0.31756756756756754,
+          "class_acc_gold": 0.6722972972972973,
+          "kappa_pred": 0.17556704584625987
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 4,
           "applies": 1.0,
           "matches_pred": 0.0,
-          "matches_gold": 0.25
+          "matches_gold": 0.25,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.25,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 0.9338235294117647,
+          "matches_pred": 0.6544117647058824,
+          "matches_gold": 0.6617647058823529,
+          "class_acc_pred": 0.6544117647058824,
+          "class_acc_gold": 0.6617647058823529,
+          "kappa_pred": 0.45109489051094886
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 0.8571428571428571,
+          "matches_pred": 0.03571428571428571,
+          "matches_gold": 0.6428571428571429,
+          "class_acc_pred": 0.14285714285714285,
+          "class_acc_gold": 0.6428571428571429,
+          "kappa_pred": 0.10638297872340426
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.9191176470588235,
+          "matches_pred": 0.0,
+          "matches_gold": 0.6764705882352942,
+          "class_acc_pred": 0.007352941176470588,
+          "class_acc_gold": 0.6764705882352942,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 0.7108433734939759,
+            "guessed": 140
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 0.6666666666666666,
+            "guessed": 50
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.4827586206896552,
+            "guessed": 70
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.25,
+            "guessed": 3
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 1.0,
+            "guessed": 20
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.14285714285714285,
+            "guessed": 5
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 6
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 4
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.007352941176470588,
+            "guessed": 2
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 59,
+            "reg_t": 12,
+            "reg_\u0259d": 3,
+            "no_change": 1,
+            "vowel_change": 3,
+            "rhyme_replaced": 2,
+            "vowel_change_suffix": 2,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 16,
+            "reg_d": 5,
+            "rhyme_replaced": 1,
+            "reg_\u0259d": 1,
+            "vowel_change": 1
+          },
+          "reg_\u0259d": {
+            "coda_change": 1,
+            "vowel_change": 5,
+            "reg_\u0259d": 14,
+            "reg_t": 4,
+            "reg_d": 3,
+            "no_change": 1,
+            "rhyme_replaced": 1
+          },
+          "no_change": {
+            "no_change": 1,
+            "reg_d": 1,
+            "reg_\u0259d": 2
+          },
+          "vowel_change": {
+            "vowel_change": 2
+          },
+          "vowel_change_suffix": {
+            "vowel_change_suffix": 1,
+            "reg_d": 1,
+            "other": 1,
+            "rhyme_replaced": 1,
+            "reg_t": 3
+          },
+          "rhyme_replaced": {
+            "vowel_change_suffix": 1,
+            "reg_d": 8,
+            "reg_t": 1
+          },
+          "coda_change": {
+            "reg_\u0259d": 1,
+            "reg_d": 3,
+            "reg_t": 1
+          },
+          "other": {
+            "reg_d": 60,
+            "reg_\u0259d": 49,
+            "reg_t": 13,
+            "vowel_change": 9,
+            "other": 1,
+            "coda_change": 2,
+            "vowel_change_suffix": 1,
+            "rhyme_replaced": 1
+          }
+        }
+      },
+      "final": {
+        "all": {
+          "n": 300,
+          "applies": 0.9333333333333333,
+          "matches_pred": 0.3933333333333333,
+          "matches_gold": 0.83,
+          "class_acc_pred": 0.3933333333333333,
+          "class_acc_gold": 0.8333333333333334,
+          "kappa_pred": 0.26870429401837614
+        },
+        "gold_regular": {
+          "n": 296,
+          "applies": 0.9358108108108109,
+          "matches_pred": 0.39864864864864863,
+          "matches_gold": 0.8412162162162162,
+          "class_acc_pred": 0.39864864864864863,
+          "class_acc_gold": 0.8412162162162162,
+          "kappa_pred": 0.2729580924257268
+        },
+        "gold_irregular": {
+          "n": 4,
+          "applies": 0.75,
+          "matches_pred": 0.0,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.25,
+          "kappa_pred": -0.06666666666666667
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 0.9411764705882353,
+          "matches_pred": 0.8676470588235294,
+          "matches_gold": 0.875,
+          "class_acc_pred": 0.8676470588235294,
+          "class_acc_gold": 0.8823529411764706,
+          "kappa_pred": 0.778781854328574
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.9285714285714286,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.9285714285714286,
+          "kappa_pred": -0.01161290322580645
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.9117647058823529,
+          "matches_pred": 0.0,
+          "matches_gold": 0.7647058823529411,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.7647058823529411,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 0.9156626506024096,
+            "guessed": 150
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 1.0,
+            "guessed": 48
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.6206896551724138,
+            "guessed": 54
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 17
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 21
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.0,
+            "guessed": 5
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 5
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 76,
+            "vowel_change_suffix": 3,
+            "vowel_change": 2,
+            "no_change": 1,
+            "coda_change": 1
+          },
+          "reg_t": {
+            "reg_t": 24
+          },
+          "reg_\u0259d": {
+            "vowel_change": 6,
+            "reg_\u0259d": 18,
+            "no_change": 4,
+            "reg_t": 1
+          },
+          "no_change": {
+            "reg_\u0259d": 3,
+            "reg_d": 1
+          },
+          "vowel_change": {
+            "reg_d": 1,
+            "no_change": 1
+          },
+          "vowel_change_suffix": {
+            "reg_d": 5,
+            "reg_t": 2
+          },
+          "rhyme_replaced": {
+            "reg_t": 1,
+            "reg_d": 7,
+            "reg_\u0259d": 1,
+            "coda_change": 1
+          },
+          "coda_change": {
+            "reg_d": 4,
+            "reg_t": 1
+          },
+          "other": {
+            "reg_d": 56,
+            "reg_\u0259d": 32,
+            "vowel_change": 13,
+            "no_change": 11,
+            "reg_t": 19,
+            "coda_change": 3,
+            "vowel_change_suffix": 2
+          }
+        }
+      },
+      "majority": {
+        "all": {
+          "n": 300,
+          "applies": 1.0,
+          "matches_pred": 0.27666666666666667,
+          "matches_gold": 0.5466666666666666,
+          "class_acc_pred": 0.27666666666666667,
+          "class_acc_gold": 0.5466666666666666,
+          "kappa_pred": 0.0
+        },
+        "gold_regular": {
+          "n": 296,
+          "applies": 1.0,
+          "matches_pred": 0.28040540540540543,
+          "matches_gold": 0.5540540540540541,
+          "class_acc_pred": 0.28040540540540543,
+          "class_acc_gold": 0.5540540540540541,
+          "kappa_pred": 0.0
+        },
+        "gold_irregular": {
+          "n": 4,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 1.0,
+          "matches_pred": 0.6102941176470589,
+          "matches_gold": 0.6102941176470589,
+          "class_acc_pred": 0.6102941176470589,
+          "class_acc_gold": 0.6102941176470589,
+          "kappa_pred": 0.0
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.6785714285714286,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.6785714285714286,
+          "kappa_pred": 0.0
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 1.0,
+          "matches_pred": 0.0,
+          "matches_gold": 0.45588235294117646,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.45588235294117646,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 1.0,
+            "guessed": 300
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 0
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "reg_d": 83
+          },
+          "reg_t": {
+            "reg_d": 24
+          },
+          "reg_\u0259d": {
+            "reg_d": 29
+          },
+          "no_change": {
+            "reg_d": 4
+          },
+          "vowel_change": {
+            "reg_d": 2
+          },
+          "vowel_change_suffix": {
+            "reg_d": 7
+          },
+          "rhyme_replaced": {
+            "reg_d": 10
+          },
+          "coda_change": {
+            "reg_d": 5
+          },
+          "other": {
+            "reg_d": 136
+          }
         }
       },
       "random": {
         "all": {
           "n": 300,
-          "applies": 0.8733333333333333,
-          "matches_pred": 0.16,
-          "matches_gold": 0.34
+          "applies": 0.8933333333333333,
+          "matches_pred": 0.16666666666666666,
+          "matches_gold": 0.35,
+          "class_acc_pred": 0.16666666666666666,
+          "class_acc_gold": 0.35,
+          "kappa_pred": 0.0038385421509117843
         },
-        "regular": {
+        "gold_regular": {
           "n": 296,
-          "applies": 0.8716216216216216,
-          "matches_pred": 0.16216216216216217,
-          "matches_gold": 0.34459459459459457
+          "applies": 0.8918918918918919,
+          "matches_pred": 0.16891891891891891,
+          "matches_gold": 0.3547297297297297,
+          "class_acc_pred": 0.16891891891891891,
+          "class_acc_gold": 0.3547297297297297,
+          "kappa_pred": 0.004688418376413
         },
-        "irregular": {
+        "gold_irregular": {
           "n": 4,
           "applies": 1.0,
           "matches_pred": 0.0,
-          "matches_gold": 0.0
+          "matches_gold": 0.0,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.0,
+          "kappa_pred": 0.0
+        },
+        "pred_regular": {
+          "n": 136,
+          "applies": 0.9044117647058824,
+          "matches_pred": 0.36764705882352944,
+          "matches_gold": 0.36764705882352944,
+          "class_acc_pred": 0.36764705882352944,
+          "class_acc_gold": 0.36764705882352944,
+          "kappa_pred": 0.04522448979591846
+        },
+        "pred_irregular": {
+          "n": 28,
+          "applies": 0.8928571428571429,
+          "matches_pred": 0.0,
+          "matches_gold": 0.5357142857142857,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.5357142857142857,
+          "kappa_pred": -0.014230271668822767
+        },
+        "pred_other": {
+          "n": 136,
+          "applies": 0.8823529411764706,
+          "matches_pred": 0.0,
+          "matches_gold": 0.29411764705882354,
+          "class_acc_pred": 0.0,
+          "class_acc_gold": 0.29411764705882354,
+          "kappa_pred": 0.0
+        },
+        "per_class": {
+          "reg_d": {
+            "n": 83,
+            "recall": 0.40963855421686746,
+            "guessed": 138
+          },
+          "reg_t": {
+            "n": 24,
+            "recall": 0.4166666666666667,
+            "guessed": 81
+          },
+          "reg_\u0259d": {
+            "n": 29,
+            "recall": 0.20689655172413793,
+            "guessed": 40
+          },
+          "no_change": {
+            "n": 4,
+            "recall": 0.0,
+            "guessed": 9
+          },
+          "vowel_change": {
+            "n": 2,
+            "recall": 0.0,
+            "guessed": 22
+          },
+          "vowel_change_suffix": {
+            "n": 7,
+            "recall": 0.0,
+            "guessed": 4
+          },
+          "rhyme_replaced": {
+            "n": 10,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "coda_change": {
+            "n": 5,
+            "recall": 0.0,
+            "guessed": 3
+          },
+          "other": {
+            "n": 136,
+            "recall": 0.0,
+            "guessed": 0
+          }
+        },
+        "confusion": {
+          "reg_d": {
+            "no_change": 4,
+            "reg_t": 23,
+            "reg_\u0259d": 12,
+            "reg_d": 34,
+            "vowel_change_suffix": 1,
+            "vowel_change": 7,
+            "coda_change": 1,
+            "rhyme_replaced": 1
+          },
+          "reg_t": {
+            "reg_\u0259d": 4,
+            "reg_t": 10,
+            "reg_d": 10
+          },
+          "reg_\u0259d": {
+            "reg_d": 12,
+            "vowel_change_suffix": 1,
+            "reg_\u0259d": 6,
+            "reg_t": 7,
+            "vowel_change": 2,
+            "no_change": 1
+          },
+          "no_change": {
+            "reg_t": 1,
+            "reg_d": 3
+          },
+          "vowel_change": {
+            "reg_d": 2
+          },
+          "vowel_change_suffix": {
+            "reg_d": 2,
+            "reg_\u0259d": 2,
+            "reg_t": 2,
+            "vowel_change": 1
+          },
+          "rhyme_replaced": {
+            "reg_d": 7,
+            "reg_\u0259d": 1,
+            "vowel_change_suffix": 1,
+            "vowel_change": 1
+          },
+          "coda_change": {
+            "reg_t": 2,
+            "reg_d": 2,
+            "reg_\u0259d": 1
+          },
+          "other": {
+            "reg_t": 36,
+            "reg_d": 66,
+            "rhyme_replaced": 2,
+            "vowel_change": 11,
+            "reg_\u0259d": 14,
+            "no_change": 4,
+            "coda_change": 2,
+            "vowel_change_suffix": 1
+          }
         }
       }
     }
