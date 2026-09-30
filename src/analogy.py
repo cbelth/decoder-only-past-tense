@@ -223,8 +223,12 @@ def summarize(rows) -> dict:
 
 MODEL_POOLS = ('sep', 'mean', 'stem', 'decision')
 # neighbours in the spline view of the decision step (see spline.py): the
-# nearest ReLU region, and the most similar templates
-SPLINE_METHODS = ('model_region', 'model_template', 'model_template_chosen')
+# nearest ReLU region, and the most similar templates. the template methods
+# depend on the model's choice (a_chosen = J^T w_chosen), so similarity in
+# them is partly similarity of the choice; model_jacobian, the templates of
+# every candidate token together, does not
+SPLINE_METHODS = ('model_region', 'model_template', 'model_template_chosen',
+                  'model_jacobian')
 METHODS = (tuple(f'model_{pool}' for pool in MODEL_POOLS) + SPLINE_METHODS
            + ('string', 'final', 'majority', 'random'))
 

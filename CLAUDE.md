@@ -87,7 +87,9 @@ TSV: `source<TAB>target<TAB>features`. Segments are space-separated IPA, e.g.
     `other`. Known compromises: `buy → bought` is `vowel_change_suffix`,
     `fight → fought` is `vowel_change`, and `stand → stood` and
     `hear → heard` are `rhyme_replaced`.
-  - `METHODS` are `model_{sep,mean,stem,decision}` plus these baselines:
+  - `METHODS` are `model_{sep,mean,stem,decision}`, the spline methods
+    `model_region`, `model_template` and `model_template_chosen` (see
+    `spline.py`), plus these baselines:
     - `string`: nearest by edit distance, ties broken at random.
     - `final`: a random training verb with the same last segment. This is
       the one to beat on regulars, since the last segment decides the
@@ -113,6 +115,32 @@ TSV: `source<TAB>target<TAB>features`. Segments are space-separated IPA, e.g.
     matrix (rows: class of the model's output; columns: the neighbour's).
   - Accuracy is dominated by the three regular classes. Read kappa and
     `pred_irregular` against the `final` and `majority` baselines.
+- `spline.py`: the spline view of the decision step, motivated by
+  Balestriero & Baraniuk 2018, "A Spline Theory of Deep Networks".
+  - `forward` is `SegStrLM`'s forward pass written by hand (verified against
+    `lm.forward` to about 1e-5). In storing mode it detaches and saves the
+    attention weights, LayerNorm scales and ReLU masks. In frozen mode it
+    reuses them, which makes the network exactly affine in the input
+    embeddings X₀: logit_c = Σ_s ⟨A_c[s], X₀[s]⟩ + b_c.
+  - `decompose` runs this on the `decision` sequence (prompt plus the copied
+    stem) at the decision step. It returns:
+    - the ReLU code: 256 + 256 bits at that position (the region);
+    - templates, as gradients through the frozen map, for the chosen logit
+      and for the chosen-minus-runner-up margin;
+    - per-position contributions;
+    - exactness checks: Σ⟨A,X₀⟩ + b = logit, and linearity under scaling.
+  - Templates are compared through two right-aligned windows of `k=6`
+    positions: one ending at the decision step (copied stem), one ending
+    before `<sep>` (the lemma).
+  - `decision_features` gives these for a dataset. The analogy methods use
+    them:
+    - `model_region`: least Hamming distance between codes, ties random.
+    - `model_template`: cosine between margin templates.
+    - `model_template_chosen`: cosine between chosen-logit templates.
+  - `python spline.py --run ../results/en_0_1000` prints the region report:
+    live units, exact code sharing, nearest-vs-random Hamming distances,
+    agreement with the hidden state, and neighbour class and final-segment
+    match.
 - `run.py`: one (seed, size) run.
   - `--seed` picks the data split and also seeds training
     (`seed_everything`, `deterministic=True`).
@@ -164,15 +192,21 @@ TSV: `source<TAB>target<TAB>features`. Segments are space-separated IPA, e.g.
   - `--methods` picks a subset of `analogy.METHODS`.
   - `--tag` (default `posthoc`) names the outputs, so different method sets
     don't overwrite each other.
-  - It skips runs that already have `analogy.<tag>.json` (`--redo` to
-    recompute).
+  - `analogy.<tag>.json` stores a SHA-1 of the `model.pt` it was computed
+    from. A run is skipped only if that matches, so a retrained model is
+    always reanalysed (`--redo` recomputes anyway). File times are not used,
+    because copying runs between machines resets them. Results from before
+    the hash was stored have none and are trusted.
   - `--data` overrides the stored data path.
   - It then writes two long-format tables across all runs:
-    - `results/analogy.<tag>.csv`: seed, size, split, method, subset, n,
+    - `results/analogy.<tag>.csv`: seed, size, stop, split, method, subset, n,
       applies, matches_pred, matches_gold, class_acc_pred, class_acc_gold,
       kappa_pred.
-    - `results/analogy_confusion.<tag>.csv`: seed, size, split, method,
-      class_pred, class_neighbor, count.
+    - `results/analogy_confusion.<tag>.csv`: seed, size, stop, split,
+      method, class_pred, class_neighbor, count.
+    - `stop` is the run's training criterion, since a grid can mix them.
+      Filter on it before comparing sizes. Runs with missing or stale
+      results are left out, and the script lists them.
 
 ## Running
 
@@ -290,6 +324,130 @@ From `results/analogy.posthoc.csv` and `analogy_confusion.posthoc.csv`.
   classed `other` falls from 0.83 at size 100 and 0.51 at 500 to 0.11 at
   1500. Train accuracy is about 0.9 even at size 100, while test is about
   0.02.
+
+## Findings: spline view (seed 0, size 1000, `loss_train_irregular`)
+
+- **Templates are exact** to about 1e-5.
+- **Regions:** all 512 decision-step ReLUs vary across verbs. No two verbs
+  share a full code; 260 of 1,600 share a layer-1-only code. Median Hamming
+  distance to the nearest training verb is 39, against 214 for a random
+  one, so regions are unique but strongly structured.
+- **Redundancy:** region distance largely tracks the hidden state (Spearman
+  0.73; same nearest neighbour 54% of the time). The margin template is a
+  different view (0.39; 37%).
+- **Irregular outputs** (43, ftune+dev+test), class agreement:
+  - `model_template` and `model_template_chosen` 0.58
+  - `decision` 0.47, `region` 0.44
+  - `string` 0.16, `final` 0.09
+- **The gain is the `hit` type.** For `t`/`d`-final verbs the model leaves
+  unchanged, the hidden-state neighbour is often a regular `-əd` verb (both
+  sit near the stop-vs-`ə d` boundary). The template neighbour is another
+  unchanged verb, often phonologically unlike it: `r ɪ d` → `ʃ ʌ t`,
+  `s k ɪ d` → `s p r ɛ d`. Template neighbours match the final segment
+  less often (0.73 vs 0.83).
+- `template_chosen` doing as well as `template` suggests the gain isn't an
+  artefact of which runner-up the margin is taken against.
+- **Region novelty:** of the 10% of held-out verbs farthest (Hamming) from
+  every training region, 95% get malformed (`other`) output, against 16%
+  overall.
+
+## Findings: spline methods across the full retrained grid (150 runs, `loss_train_irregular`)
+
+Class agreement on irregular outputs (ftune+dev+test, pooled over seeds):
+
+| size | 100 | 300 | 500 | 900 | 1100 | 1500 |
+|---|---|---|---|---|---|---|
+| `template_chosen` | 0.38 | 0.52 | 0.53 | 0.53 | 0.58 | 0.65 |
+| `template` (margin) | 0.30 | 0.47 | 0.50 | 0.50 | 0.55 | 0.64 |
+| `decision` | 0.34 | 0.42 | 0.40 | 0.41 | 0.44 | 0.55 |
+| `region` | 0.31 | 0.33 | 0.31 | 0.35 | 0.39 | 0.49 |
+| `string` | 0.17 | 0.18 | 0.18 | 0.21 | 0.22 | 0.24 |
+| `final` | 0.15 | 0.09 | 0.09 | 0.08 | 0.06 | 0.07 |
+
+- `template_chosen` beats `decision` in 9–10 of 10 seeds at every size from
+  200 up (7/10 at 100).
+- The margin `template` is weaker at small sizes (2/10 seeds at 100, 5/10
+  at 200) and catches up from about 500.
+- On all test items, κ is nearly identical across model methods; regulars
+  dominate.
+- At 1500 the gain is concentrated in `no_change` (recall 0.67 → 0.94);
+  `vowel_change` is about 0.9 for every model method.
+- `vowel_change_suffix`, `rhyme_replaced` and `coda_change` are about 0.2
+  for every method, since the decision step sees only the first change.
+
+## Caveat on the template results (found after the grid run)
+
+- **The chosen-logit template isn't choice-free.** It equals the Jacobian
+  of the final hidden state times the output weight row of the chosen
+  token, so verbs with the same chosen token share a fixed factor. The
+  margin template likewise depends on the winner and the runner-up.
+  Template similarity is therefore partly similarity of the model's
+  choice, the same circularity as `stem`.
+- **Check on seed 0 / 1500 (decision step, irregular outputs, n=43):** a
+  choice-free template (Jacobian of *all* logits, 34,560 dims) gets 22/43,
+  against 25/43 for the hidden state and 27/43 for `template_chosen`. On
+  `no_change` it gets 13/16, against 14/16 and 16/16. The template's lead
+  over the hidden state disappears once the choice is removed.
+- **The hidden state isn't choice-free either:** logits = W·h. Hidden
+  neighbours share the chosen token 95% of the time. Any representation
+  read at the step where the choice is made encodes that choice, which
+  limits what agreement scores at that step can show.
+- **Resolved on the full grid.** `model_jacobian` (choice-free) was added
+  and all 150 runs rerun. Class agreement on irregular outputs (pooled):
+
+  | size | 100 | 300 | 500 | 900 | 1100 | 1500 |
+  |---|---|---|---|---|---|---|
+  | `decision` (hidden) | 0.34 | 0.42 | 0.40 | 0.41 | 0.44 | 0.55 |
+  | `jacobian` (choice-free) | 0.35 | 0.36 | 0.33 | 0.35 | 0.42 | 0.48 |
+  | `template_chosen` (leaky) | 0.38 | 0.52 | 0.53 | 0.53 | 0.58 | 0.65 |
+
+  The Jacobian is below `decision` in 8–10 of 10 seeds at most sizes. **So
+  the template advantage was the choice leak. Choice-free templates are no
+  better than, and mostly slightly worse than, the hidden state as a basis
+  for analogy.** What stands is that all model-based neighbours far exceed
+  phonological ones (`string` about 0.2, `final` < 0.1 on irregular
+  outputs).
+
+## The walk (`walk.py`)
+
+A held-out verb is generated one step at a time. At each step the nearest
+step of any training verb is found, and its edit operation is applied to the
+held-out lemma.
+- **Operations** come from aligning each training verb's lemma with the
+  model's own output for it (`align`: Levenshtein, backtraced with ties
+  resolved match, then deletion, then substitution, then insertion, so
+  deletions sit at the right edge). They are relative to a pointer into
+  the lemma: COPY, SUB y, INS y and STOP, with skipped lemma segments
+  attached as `skip`.
+- **Steps are keyed by** `jacobian` (all-logit Jacobian at the step,
+  windowed and count-sketched to 4096 dims; choice-free), `hidden` (the
+  final-layer state), or `context` (symbolic baseline: last two output
+  segments plus the next two lemma segments).
+- **Scored by** free-walk fidelity to the model's output and to gold, and
+  forced step agreement along the model's own path.
+- `python walk.py --run ../results/en_0_1500` writes `<run>/walk.tsv`.
+  It takes several minutes at size 1500 (each step needs a Jacobian).
+
+Seed 0 / 1500, held-out (900 verbs):
+
+| | `jacobian` | `hidden` | `context` |
+|---|---|---|---|
+| walk = model output, all | 0.877 | 0.886 | 0.694 |
+| regular (802) | 0.963 | 0.960 | 0.772 |
+| `no_change` (16) | 0.750 | 0.938 | 0.312 |
+| other irregular (27) | 0.19 | 0.26 | 0 |
+| walk = gold | 0.892 | 0.877 | 0.739 |
+| forced SUB steps (114) | 0.04 | 0.06 | 0.01 |
+| forced INS / STOP | 0.93 / 0.99 | 0.93 / 0.99 | 0.84 / 0.95 |
+
+- **Substitutions almost never transfer.** At a vowel-change step the
+  nearest training step is usually a COPY, so the walk keeps the vowel and
+  adds a regular suffix (`f iː l → f iː l d`). The walk behaves as a
+  regularizing analogical model: it reproduces suffix and stop decisions
+  well and stem changes poorly.
+- **At small sizes the walk can beat the model on gold** (seed 0 / 300:
+  0.49 against the model's 0.29), because pointer-based copying can't
+  garble the stem. That's the walk's structure, not the representation.
 
 ## Open next steps
 

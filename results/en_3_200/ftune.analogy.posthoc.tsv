@@ -13,7 +13,7 @@ model_sep	d a ɪ n	d a ɪ n d	d a ɪ n d	d r a ɪ	d r a ɪ d	d r a ɪ d	d a ɪ n
 model_sep	m ɪ s	m ɪ s t	m ɪ s t	m ʊ r	m ʊ r d	m ʊ r d	m ɪ s d	0	0	reg_t	reg_t	reg_d
 model_sep	n ɑː k	n ɑː k t	n ɑː k t	n e ɪ m	n e ɪ m d	n e ɪ m d	n ɑː k d	0	0	reg_t	reg_t	reg_d
 model_sep	n iː d	n iː d ə d	n ɛ d	n e ɪ m	n e ɪ m d	n e ɪ m d	n iː d d	0	0	reg_əd	vowel_change	reg_d
-model_sep	m uː v	m uː v d	m o ʊ d	m ʊ r	m ʊ r d	m ʊ r d	m uː v d	0	1	reg_d	rhyme_replaced	reg_d
+model_sep	m uː v	m uː v d	m o ʊ d	m o ʊ	m o ʊ d	m o ʊ d	m uː v d	0	1	reg_d	rhyme_replaced	reg_d
 model_sep	f l ɪ p	f l ɪ p t	f l ɪ p t	f l a ɪ	f l uː	f l uː	NA	0	0	reg_t	reg_t	vowel_change
 model_sep	r ɛ d iː	r ɛ d iː d	r ɛ d	r e ɪ z	r e ɪ z d	r e ɪ z d	r ɛ d iː d	0	1	reg_d	other	reg_d
 model_sep	z ɪ p	z ɪ p t	z ɪ p t	z ɪ p ɹ̩	z ɪ p ɹ̩ d	z ɪ p ɹ̩ d	z ɪ p d	0	0	reg_t	reg_t	reg_d
@@ -159,6 +159,166 @@ model_decision	h ʌ ɡ	h ʌ ɡ d	h ʌ ɡ	d ɔ ɡ	d ɔ ɡ d	d ɔ ɡ d	h ʌ ɡ d	0
 model_decision	h ɪ t	h ɪ t	h ʌ t	d ɪ ɡ	d ʌ ɡ	d ʌ ɡ	NA	0	0	no_change	vowel_change	vowel_change
 model_decision	h æ m ɹ̩	h æ m ɹ̩ d	h æ m ɹ̩ d	m æ t ɹ̩	m æ t ɹ̩ d	m æ t ɹ̩ d	h æ m ɹ̩ d	1	1	reg_d	reg_d	reg_d
 model_decision	w a ɪ n d	w a ɪ n d ə d	w a ʊ n d	f a ɪ n d	f a ʊ n d	f a ʊ n d	w a ʊ n d	1	0	reg_əd	vowel_change	vowel_change
+model_region	iː t	e ɪ t	iː t t t	t ɛ l	t o ʊ l d	t o ʊ l d	NA	0	0	vowel_change	coda_change	vowel_change_suffix
+model_region	m e ɪ k	m e ɪ d	m e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	m e ɪ k	1	0	coda_change	no_change	no_change
+model_region	n o ʊ	n uː	n o ʊ d	ʃ o ʊ	ʃ o ʊ d	ʃ o ʊ d	n o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_region	f ɔ l	f ɛ l	f ɔ l d	k ɔ l	k ɔ l d	k ɔ l d	f ɔ l d	1	0	vowel_change	reg_d	reg_d
+model_region	b r ɪ ŋ	b r ɔ t	b r ɪ ŋ d	b ɪ l ɔ ŋ	b ɪ l ɔ ŋ d	b ɪ l ɔ ŋ d	b r ɪ ŋ d	1	0	rhyme_replaced	reg_d	reg_d
+model_region	s t ɑː r t	s t ɑː r t ə d	s t ʊ k t ə d	s t æ n d	s t ʊ d	s t ʊ d	NA	0	0	reg_əd	other	rhyme_replaced
+model_region	t e ɪ k	t ʊ k	t e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	t e ɪ k	1	0	vowel_change	no_change	no_change
+model_region	h e ɪ t	h e ɪ t ə d	h e ɪ t ə d	w e ɪ t	w e ɪ t ə d	w e ɪ t ə d	h e ɪ t ə d	1	1	reg_əd	reg_əd	reg_əd
+model_region	r a ɪ t	r o ʊ t	r o ʊ t	r a ɪ d	r o ʊ d	r o ʊ d	NA	0	0	vowel_change	vowel_change	vowel_change
+model_region	f ɪ t	f ɪ t	f ɪ t	ʃ ʌ t	ʃ ʌ t	ʃ ʌ t	f ɪ t	1	1	no_change	no_change	no_change
+model_region	d a ɪ n	d a ɪ n d	d a ɪ n d	k l iː n	k l iː n d	k l iː n d	d a ɪ n d	1	1	reg_d	reg_d	reg_d
+model_region	m ɪ s	m ɪ s t	m ɪ s t	k ɪ s	k ɪ s t	k ɪ s t	m ɪ s t	1	1	reg_t	reg_t	reg_t
+model_region	n ɑː k	n ɑː k t	n ɑː k t	r ɑː k	r ɑː k t	r ɑː k t	n ɑː k t	1	1	reg_t	reg_t	reg_t
+model_region	n iː d	n iː d ə d	n ɛ d	h iː r	h ɹ̩ d	h ɹ̩ d	NA	0	0	reg_əd	vowel_change	rhyme_replaced
+model_region	m uː v	m uː v d	m o ʊ d	l uː z	l ɔ s t	l ɔ s t	NA	0	0	reg_d	rhyme_replaced	rhyme_replaced
+model_region	f l ɪ p	f l ɪ p t	f l ɪ p t	t r ɪ p	t r ɪ p t	t r ɪ p t	f l ɪ p t	1	1	reg_t	reg_t	reg_t
+model_region	r ɛ d iː	r ɛ d iː d	r ɛ d	p r iː t ɛ n d	p r iː t ɛ n d ə d	p r iː t ɛ n d ə d	r ɛ d iː ə d	0	0	reg_d	other	reg_əd
+model_region	z ɪ p	z ɪ p t	z ɪ p t	w uː p	w uː p t	w uː p t	z ɪ p t	1	1	reg_t	reg_t	reg_t
+model_region	f a ɪ t	f ɔ t	f a ɪ t	k w ɪ t	k w ɪ t	k w ɪ t	f a ɪ t	1	0	vowel_change	no_change	no_change
+model_region	k æ t͡ʃ	k ɔ t	k æ t͡ʃ t	t ʌ t͡ʃ	t ʌ t͡ʃ t	t ʌ t͡ʃ t	k æ t͡ʃ t	1	0	rhyme_replaced	reg_t	reg_t
+model_region	f l o ʊ t	f l o ʊ t ə d	f l t ə l d	b ɪ l d	b ɪ l t	b ɪ l t	NA	0	0	reg_əd	other	coda_change
+model_region	w ɪ ʃ	w ɪ ʃ t	w ɪ ʃ t	p ʊ ʃ	p ʊ ʃ t	p ʊ ʃ t	w ɪ ʃ t	1	1	reg_t	reg_t	reg_t
+model_region	ʃ e ɪ k	ʃ ʊ k	ʃ e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	ʃ e ɪ k	1	0	vowel_change	no_change	no_change
+model_region	k ɪ k	k ɪ k t	k ɪ k t	p ɪ k	p ɪ k t	p ɪ k t	k ɪ k t	1	1	reg_t	reg_t	reg_t
+model_region	t͡ʃ e ɪ n d͡ʒ	t͡ʃ e ɪ n d͡ʒ d	t͡ʃ t ʊ n t ə d	t ʌ t͡ʃ	t ʌ t͡ʃ t	t ʌ t͡ʃ t	t͡ʃ e ɪ n d͡ʒ t	0	0	reg_d	other	reg_t
+model_region	θ r o ʊ	θ r uː	θ r o ʊ d	ɔ r d ɹ̩	ɔ r d ɹ̩ d	ɔ r d ɹ̩ d	θ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_region	b æ k	b æ k t	b æ k t	æ s k	æ s k t	æ s k t	b æ k t	1	1	reg_t	reg_t	reg_t
+model_region	f l æ ʃ	f l æ ʃ t	f l uː	f l a ɪ	f l uː	f l uː	NA	0	0	reg_t	other	vowel_change
+model_region	ɡ r o ʊ	ɡ r uː	ɡ r o ʊ d	k l iː n	k l iː n d	k l iː n d	ɡ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_region	s m a ɪ l	s m a ɪ l d	s a ɪ d	ɡ ɛ s	ɡ ɛ s t	ɡ ɛ s t	s m a ɪ l t	0	0	reg_d	other	reg_t
+model_region	s t ɑː p	s t ɑː p t	s t e p t	k ʌ t	k ʌ t	k ʌ t	s t ɑː p	0	0	reg_t	vowel_change_suffix	no_change
+model_region	s t ɹ̩	s t ɹ̩ d	s t t	l ɪ f t	l ɪ f t ə d	l ɪ f t ə d	s t ɹ̩ ə d	0	0	reg_d	other	reg_əd
+model_region	t͡ʃ uː	t͡ʃ uː d	t͡ʃ t uː z d	s k r æ t͡ʃ	s k r æ t͡ʃ t	s k r æ t͡ʃ t	t͡ʃ uː t	0	0	reg_d	other	reg_t
+model_region	d r ɛ s	d r ɛ s t	d r ɛ s t	d æ n s	d æ n s t	d æ n s t	d r ɛ s t	1	1	reg_t	reg_t	reg_t
+model_region	ə n d ɹ̩ s t æ n d	ə n d ɹ̩ s t ʊ d	r æ d	b r e ɪ k	b r o ʊ k	b r o ʊ k	NA	0	0	rhyme_replaced	other	vowel_change
+model_region	t͡ʃ e ɪ s	t͡ʃ e ɪ s t	t͡ʃ e ɪ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	t͡ʃ e ɪ s t	1	1	reg_t	reg_t	reg_t
+model_region	h ʌ ɡ	h ʌ ɡ d	h ʌ ɡ	d ɔ ɡ	d ɔ ɡ d	d ɔ ɡ d	h ʌ ɡ d	0	1	reg_d	no_change	reg_d
+model_region	h ɪ t	h ɪ t	h ʌ t	h iː r	h ɹ̩ d	h ɹ̩ d	NA	0	0	no_change	vowel_change	rhyme_replaced
+model_region	h æ m ɹ̩	h æ m ɹ̩ d	h æ m ɹ̩ d	m æ t ɹ̩	m æ t ɹ̩ d	m æ t ɹ̩ d	h æ m ɹ̩ d	1	1	reg_d	reg_d	reg_d
+model_region	w a ɪ n d	w a ɪ n d ə d	w a ʊ n d	f a ɪ n d	f a ʊ n d	f a ʊ n d	w a ʊ n d	1	0	reg_əd	vowel_change	vowel_change
+model_template	iː t	e ɪ t	iː t t t	s k r æ t͡ʃ	s k r æ t͡ʃ t	s k r æ t͡ʃ t	iː t t	0	0	vowel_change	coda_change	reg_t
+model_template	m e ɪ k	m e ɪ d	m e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	m e ɪ k	1	0	coda_change	no_change	no_change
+model_template	n o ʊ	n uː	n o ʊ d	s o ʊ	s o ʊ d	s o ʊ d	n o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_template	f ɔ l	f ɛ l	f ɔ l d	k ɔ l	k ɔ l d	k ɔ l d	f ɔ l d	1	0	vowel_change	reg_d	reg_d
+model_template	b r ɪ ŋ	b r ɔ t	b r ɪ ŋ d	k l iː n	k l iː n d	k l iː n d	b r ɪ ŋ d	1	0	rhyme_replaced	reg_d	reg_d
+model_template	s t ɑː r t	s t ɑː r t ə d	s t ʊ k t ə d	s t æ n d	s t ʊ d	s t ʊ d	NA	0	0	reg_əd	other	rhyme_replaced
+model_template	t e ɪ k	t ʊ k	t e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	t e ɪ k	1	0	vowel_change	no_change	no_change
+model_template	h e ɪ t	h e ɪ t ə d	h e ɪ t ə d	w e ɪ t	w e ɪ t ə d	w e ɪ t ə d	h e ɪ t ə d	1	1	reg_əd	reg_əd	reg_əd
+model_template	r a ɪ t	r o ʊ t	r o ʊ t	r a ɪ d	r o ʊ d	r o ʊ d	NA	0	0	vowel_change	vowel_change	vowel_change
+model_template	f ɪ t	f ɪ t	f ɪ t	s ɛ t	s ɛ t	s ɛ t	f ɪ t	1	1	no_change	no_change	no_change
+model_template	d a ɪ n	d a ɪ n d	d a ɪ n d	m æ t ɹ̩	m æ t ɹ̩ d	m æ t ɹ̩ d	d a ɪ n d	1	1	reg_d	reg_d	reg_d
+model_template	m ɪ s	m ɪ s t	m ɪ s t	k ɪ s	k ɪ s t	k ɪ s t	m ɪ s t	1	1	reg_t	reg_t	reg_t
+model_template	n ɑː k	n ɑː k t	n ɑː k t	r ɑː k	r ɑː k t	r ɑː k t	n ɑː k t	1	1	reg_t	reg_t	reg_t
+model_template	n iː d	n iː d ə d	n ɛ d	k iː p	k ɛ p t	k ɛ p t	NA	0	0	reg_əd	vowel_change	vowel_change_suffix
+model_template	m uː v	m uː v d	m o ʊ d	l uː z	l ɔ s t	l ɔ s t	NA	0	0	reg_d	rhyme_replaced	rhyme_replaced
+model_template	f l ɪ p	f l ɪ p t	f l ɪ p t	t r ɪ p	t r ɪ p t	t r ɪ p t	f l ɪ p t	1	1	reg_t	reg_t	reg_t
+model_template	r ɛ d iː	r ɛ d iː d	r ɛ d	b iː d	b iː d	b iː d ə d	r ɛ d iː	0	0	reg_d	other	no_change
+model_template	z ɪ p	z ɪ p t	z ɪ p t	b iː p	b iː p t	b iː p t	z ɪ p t	1	1	reg_t	reg_t	reg_t
+model_template	f a ɪ t	f ɔ t	f a ɪ t	k w ɪ t	k w ɪ t	k w ɪ t	f a ɪ t	1	0	vowel_change	no_change	no_change
+model_template	k æ t͡ʃ	k ɔ t	k æ t͡ʃ t	k ɔ f	k ɔ f t	k ɔ f t	k æ t͡ʃ t	1	0	rhyme_replaced	reg_t	reg_t
+model_template	f l o ʊ t	f l o ʊ t ə d	f l t ə l d	s k r æ t͡ʃ	s k r æ t͡ʃ t	s k r æ t͡ʃ t	f l o ʊ t t	0	0	reg_əd	other	reg_t
+model_template	w ɪ ʃ	w ɪ ʃ t	w ɪ ʃ t	p ʊ ʃ	p ʊ ʃ t	p ʊ ʃ t	w ɪ ʃ t	1	1	reg_t	reg_t	reg_t
+model_template	ʃ e ɪ k	ʃ ʊ k	ʃ e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	ʃ e ɪ k	1	0	vowel_change	no_change	no_change
+model_template	k ɪ k	k ɪ k t	k ɪ k t	k ʊ k	k ʊ k t	k ʊ k t	k ɪ k t	1	1	reg_t	reg_t	reg_t
+model_template	t͡ʃ e ɪ n d͡ʒ	t͡ʃ e ɪ n d͡ʒ d	t͡ʃ t ʊ n t ə d	b a ʊ n s	b a ʊ n s t	b a ʊ n s t	t͡ʃ e ɪ n d͡ʒ t	0	0	reg_d	other	reg_t
+model_template	θ r o ʊ	θ r uː	θ r o ʊ d	s ə p o ʊ z	s ə p o ʊ z d	s ə p o ʊ z d	θ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_template	b æ k	b æ k t	b æ k t	æ s k	æ s k t	æ s k t	b æ k t	1	1	reg_t	reg_t	reg_t
+model_template	f l æ ʃ	f l æ ʃ t	f l uː	r iː t͡ʃ	r iː t͡ʃ t	r iː t͡ʃ t	f l æ ʃ t	0	1	reg_t	other	reg_t
+model_template	ɡ r o ʊ	ɡ r uː	ɡ r o ʊ d	s ə p o ʊ z	s ə p o ʊ z d	s ə p o ʊ z d	ɡ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_template	s m a ɪ l	s m a ɪ l d	s a ɪ d	p ɑː r k	p ɑː r k t	p ɑː r k t	s m a ɪ l t	0	0	reg_d	other	reg_t
+model_template	s t ɑː p	s t ɑː p t	s t e p t	h ɹ̩ t	h ɹ̩ t	h ɹ̩ t	s t ɑː p	0	0	reg_t	vowel_change_suffix	no_change
+model_template	s t ɹ̩	s t ɹ̩ d	s t t	b r ʌ ʃ	b r ʌ ʃ t	b r ʌ ʃ t	s t ɹ̩ t	0	0	reg_d	other	reg_t
+model_template	t͡ʃ uː	t͡ʃ uː d	t͡ʃ t uː z d	f ɪ n ɪ ʃ	f ɪ n ɪ ʃ t	f ɪ n ɪ ʃ t	t͡ʃ uː t	0	0	reg_d	other	reg_t
+model_template	d r ɛ s	d r ɛ s t	d r ɛ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	d r ɛ s t	1	1	reg_t	reg_t	reg_t
+model_template	ə n d ɹ̩ s t æ n d	ə n d ɹ̩ s t ʊ d	r æ d	p ʌ n t͡ʃ	p ʌ n t͡ʃ t	p ʌ n t͡ʃ t	ə n d ɹ̩ s t æ n d t	0	0	rhyme_replaced	other	reg_t
+model_template	t͡ʃ e ɪ s	t͡ʃ e ɪ s t	t͡ʃ e ɪ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	t͡ʃ e ɪ s t	1	1	reg_t	reg_t	reg_t
+model_template	h ʌ ɡ	h ʌ ɡ d	h ʌ ɡ	h æ ŋ	h æ ŋ	h ʌ ŋ	h ʌ ɡ	1	0	reg_d	no_change	no_change
+model_template	h ɪ t	h ɪ t	h ʌ t	d ɪ ɡ	d ʌ ɡ	d ʌ ɡ	NA	0	0	no_change	vowel_change	vowel_change
+model_template	h æ m ɹ̩	h æ m ɹ̩ d	h æ m ɹ̩ d	l a ɪ v	l a ɪ v d	l a ɪ v d	h æ m ɹ̩ d	1	1	reg_d	reg_d	reg_d
+model_template	w a ɪ n d	w a ɪ n d ə d	w a ʊ n d	f a ɪ n d	f a ʊ n d	f a ʊ n d	w a ʊ n d	1	0	reg_əd	vowel_change	vowel_change
+model_template_chosen	iː t	e ɪ t	iː t t t	f ɪ n ɪ ʃ	f ɪ n ɪ ʃ t	f ɪ n ɪ ʃ t	iː t t	0	0	vowel_change	coda_change	reg_t
+model_template_chosen	m e ɪ k	m e ɪ d	m e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	m e ɪ k	1	0	coda_change	no_change	no_change
+model_template_chosen	n o ʊ	n uː	n o ʊ d	ɡ o ʊ	ɡ o ʊ d	w ɛ n t	n o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_template_chosen	f ɔ l	f ɛ l	f ɔ l d	k ɔ l	k ɔ l d	k ɔ l d	f ɔ l d	1	0	vowel_change	reg_d	reg_d
+model_template_chosen	b r ɪ ŋ	b r ɔ t	b r ɪ ŋ d	b o ʊ l	b o ʊ l d	b o ʊ l d	b r ɪ ŋ d	1	0	rhyme_replaced	reg_d	reg_d
+model_template_chosen	s t ɑː r t	s t ɑː r t ə d	s t ʊ k t ə d	s t æ n d	s t ʊ d	s t ʊ d	NA	0	0	reg_əd	other	rhyme_replaced
+model_template_chosen	t e ɪ k	t ʊ k	t e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	t e ɪ k	1	0	vowel_change	no_change	no_change
+model_template_chosen	h e ɪ t	h e ɪ t ə d	h e ɪ t ə d	l ɪ f t	l ɪ f t ə d	l ɪ f t ə d	h e ɪ t ə d	1	1	reg_əd	reg_əd	reg_əd
+model_template_chosen	r a ɪ t	r o ʊ t	r o ʊ t	r a ɪ d	r o ʊ d	r o ʊ d	NA	0	0	vowel_change	vowel_change	vowel_change
+model_template_chosen	f ɪ t	f ɪ t	f ɪ t	ʃ ʌ t	ʃ ʌ t	ʃ ʌ t	f ɪ t	1	1	no_change	no_change	no_change
+model_template_chosen	d a ɪ n	d a ɪ n d	d a ɪ n d	k l iː n	k l iː n d	k l iː n d	d a ɪ n d	1	1	reg_d	reg_d	reg_d
+model_template_chosen	m ɪ s	m ɪ s t	m ɪ s t	k ɪ s	k ɪ s t	k ɪ s t	m ɪ s t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	n ɑː k	n ɑː k t	n ɑː k t	r ɑː k	r ɑː k t	r ɑː k t	n ɑː k t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	n iː d	n iː d ə d	n ɛ d	f iː d	f ɛ d	f ɛ d	n ɛ d	1	0	reg_əd	vowel_change	vowel_change
+model_template_chosen	m uː v	m uː v d	m o ʊ d	t ɛ l	t o ʊ l d	t o ʊ l d	NA	0	0	reg_d	rhyme_replaced	vowel_change_suffix
+model_template_chosen	f l ɪ p	f l ɪ p t	f l ɪ p t	t r ɪ p	t r ɪ p t	t r ɪ p t	f l ɪ p t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	r ɛ d iː	r ɛ d iː d	r ɛ d	b iː d	b iː d	b iː d ə d	r ɛ d iː	0	0	reg_d	other	no_change
+model_template_chosen	z ɪ p	z ɪ p t	z ɪ p t	w uː p	w uː p t	w uː p t	z ɪ p t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	f a ɪ t	f ɔ t	f a ɪ t	k w ɪ t	k w ɪ t	k w ɪ t	f a ɪ t	1	0	vowel_change	no_change	no_change
+model_template_chosen	k æ t͡ʃ	k ɔ t	k æ t͡ʃ t	t ʌ t͡ʃ	t ʌ t͡ʃ t	t ʌ t͡ʃ t	k æ t͡ʃ t	1	0	rhyme_replaced	reg_t	reg_t
+model_template_chosen	f l o ʊ t	f l o ʊ t ə d	f l t ə l d	t ɔ k	t ɔ k t	t ɔ k t	f l o ʊ t t	0	0	reg_əd	other	reg_t
+model_template_chosen	w ɪ ʃ	w ɪ ʃ t	w ɪ ʃ t	p ʊ ʃ	p ʊ ʃ t	p ʊ ʃ t	w ɪ ʃ t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	ʃ e ɪ k	ʃ ʊ k	ʃ e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	ʃ e ɪ k	1	0	vowel_change	no_change	no_change
+model_template_chosen	k ɪ k	k ɪ k t	k ɪ k t	p ɪ k	p ɪ k t	p ɪ k t	k ɪ k t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	t͡ʃ e ɪ n d͡ʒ	t͡ʃ e ɪ n d͡ʒ d	t͡ʃ t ʊ n t ə d	b a ʊ n s	b a ʊ n s t	b a ʊ n s t	t͡ʃ e ɪ n d͡ʒ t	0	0	reg_d	other	reg_t
+model_template_chosen	θ r o ʊ	θ r uː	θ r o ʊ d	k æ r iː	k æ r iː d	k æ r iː d	θ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_template_chosen	b æ k	b æ k t	b æ k t	t ɔ k	t ɔ k t	t ɔ k t	b æ k t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	f l æ ʃ	f l æ ʃ t	f l uː	f l a ɪ	f l uː	f l uː	NA	0	0	reg_t	other	vowel_change
+model_template_chosen	ɡ r o ʊ	ɡ r uː	ɡ r o ʊ d	k æ r iː	k æ r iː d	k æ r iː d	ɡ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_template_chosen	s m a ɪ l	s m a ɪ l d	s a ɪ d	θ ɪ ŋ k	θ ɔ t	θ ɔ t	NA	0	0	reg_d	other	rhyme_replaced
+model_template_chosen	s t ɑː p	s t ɑː p t	s t e p t	ɡ ɪ v	ɡ e ɪ v	ɡ e ɪ v	NA	0	0	reg_t	vowel_change_suffix	vowel_change
+model_template_chosen	s t ɹ̩	s t ɹ̩ d	s t t	w ɑː ʃ	w ɑː ʃ t	w ɑː ʃ t	s t ɹ̩ t	0	0	reg_d	other	reg_t
+model_template_chosen	t͡ʃ uː	t͡ʃ uː d	t͡ʃ t uː z d	s p ɛ n d	s p ɛ n t	s p ɛ n t	NA	0	0	reg_d	other	coda_change
+model_template_chosen	d r ɛ s	d r ɛ s t	d r ɛ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	d r ɛ s t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	ə n d ɹ̩ s t æ n d	ə n d ɹ̩ s t ʊ d	r æ d	w e ɪ k	w e ɪ k	w o ʊ k	ə n d ɹ̩ s t æ n d	0	0	rhyme_replaced	other	no_change
+model_template_chosen	t͡ʃ e ɪ s	t͡ʃ e ɪ s t	t͡ʃ e ɪ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	t͡ʃ e ɪ s t	1	1	reg_t	reg_t	reg_t
+model_template_chosen	h ʌ ɡ	h ʌ ɡ d	h ʌ ɡ	k ʌ t	k ʌ t	k ʌ t	h ʌ ɡ	1	0	reg_d	no_change	no_change
+model_template_chosen	h ɪ t	h ɪ t	h ʌ t	d ɪ ɡ	d ʌ ɡ	d ʌ ɡ	NA	0	0	no_change	vowel_change	vowel_change
+model_template_chosen	h æ m ɹ̩	h æ m ɹ̩ d	h æ m ɹ̩ d	m æ t ɹ̩	m æ t ɹ̩ d	m æ t ɹ̩ d	h æ m ɹ̩ d	1	1	reg_d	reg_d	reg_d
+model_template_chosen	w a ɪ n d	w a ɪ n d ə d	w a ʊ n d	f a ɪ n d	f a ʊ n d	f a ʊ n d	w a ʊ n d	1	0	reg_əd	vowel_change	vowel_change
+model_jacobian	iː t	e ɪ t	iː t t t	h æ v	h æ d	h æ d	NA	0	0	vowel_change	coda_change	coda_change
+model_jacobian	m e ɪ k	m e ɪ d	m e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	m e ɪ k	1	0	coda_change	no_change	no_change
+model_jacobian	n o ʊ	n uː	n o ʊ d	ɡ o ʊ	ɡ o ʊ d	w ɛ n t	n o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_jacobian	f ɔ l	f ɛ l	f ɔ l d	k ɔ l	k ɔ l d	k ɔ l d	f ɔ l d	1	0	vowel_change	reg_d	reg_d
+model_jacobian	b r ɪ ŋ	b r ɔ t	b r ɪ ŋ d	k r ʌ ʃ	k r ʌ ʃ t	k r ʌ ʃ t	b r ɪ ŋ t	0	0	rhyme_replaced	reg_d	reg_t
+model_jacobian	s t ɑː r t	s t ɑː r t ə d	s t ʊ k t ə d	s t æ n d	s t ʊ d	s t ʊ d	NA	0	0	reg_əd	other	rhyme_replaced
+model_jacobian	t e ɪ k	t ʊ k	t e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	t e ɪ k	1	0	vowel_change	no_change	no_change
+model_jacobian	h e ɪ t	h e ɪ t ə d	h e ɪ t ə d	l ɪ f t	l ɪ f t ə d	l ɪ f t ə d	h e ɪ t ə d	1	1	reg_əd	reg_əd	reg_əd
+model_jacobian	r a ɪ t	r o ʊ t	r o ʊ t	r a ɪ d	r o ʊ d	r o ʊ d	NA	0	0	vowel_change	vowel_change	vowel_change
+model_jacobian	f ɪ t	f ɪ t	f ɪ t	h ɹ̩ t	h ɹ̩ t	h ɹ̩ t	f ɪ t	1	1	no_change	no_change	no_change
+model_jacobian	d a ɪ n	d a ɪ n d	d a ɪ n d	k l iː n	k l iː n d	k l iː n d	d a ɪ n d	1	1	reg_d	reg_d	reg_d
+model_jacobian	m ɪ s	m ɪ s t	m ɪ s t	k ɪ s	k ɪ s t	k ɪ s t	m ɪ s t	1	1	reg_t	reg_t	reg_t
+model_jacobian	n ɑː k	n ɑː k t	n ɑː k t	r ɑː k	r ɑː k t	r ɑː k t	n ɑː k t	1	1	reg_t	reg_t	reg_t
+model_jacobian	n iː d	n iː d ə d	n ɛ d	f iː d	f ɛ d	f ɛ d	n ɛ d	1	0	reg_əd	vowel_change	vowel_change
+model_jacobian	m uː v	m uː v d	m o ʊ d	b a ɪ	b ɔ t	b ɔ t	NA	0	0	reg_d	rhyme_replaced	vowel_change_suffix
+model_jacobian	f l ɪ p	f l ɪ p t	f l ɪ p t	t r ɪ p	t r ɪ p t	t r ɪ p t	f l ɪ p t	1	1	reg_t	reg_t	reg_t
+model_jacobian	r ɛ d iː	r ɛ d iː d	r ɛ d	h æ ŋ	h æ ŋ	h ʌ ŋ	r ɛ d iː	0	0	reg_d	other	no_change
+model_jacobian	z ɪ p	z ɪ p t	z ɪ p t	b iː p	b iː p t	b iː p t	z ɪ p t	1	1	reg_t	reg_t	reg_t
+model_jacobian	f a ɪ t	f ɔ t	f a ɪ t	l ɪ f t	l ɪ f t ə d	l ɪ f t ə d	f a ɪ t ə d	0	0	vowel_change	no_change	reg_əd
+model_jacobian	k æ t͡ʃ	k ɔ t	k æ t͡ʃ t	t ʌ t͡ʃ	t ʌ t͡ʃ t	t ʌ t͡ʃ t	k æ t͡ʃ t	1	0	rhyme_replaced	reg_t	reg_t
+model_jacobian	f l o ʊ t	f l o ʊ t ə d	f l t ə l d	b r e ɪ k	b r o ʊ k	b r o ʊ k	NA	0	0	reg_əd	other	vowel_change
+model_jacobian	w ɪ ʃ	w ɪ ʃ t	w ɪ ʃ t	p ʊ ʃ	p ʊ ʃ t	p ʊ ʃ t	w ɪ ʃ t	1	1	reg_t	reg_t	reg_t
+model_jacobian	ʃ e ɪ k	ʃ ʊ k	ʃ e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	ʃ e ɪ k	1	0	vowel_change	no_change	no_change
+model_jacobian	k ɪ k	k ɪ k t	k ɪ k t	p ɪ k	p ɪ k t	p ɪ k t	k ɪ k t	1	1	reg_t	reg_t	reg_t
+model_jacobian	t͡ʃ e ɪ n d͡ʒ	t͡ʃ e ɪ n d͡ʒ d	t͡ʃ t ʊ n t ə d	h o ʊ l d	h ɛ l d	h ɛ l d	NA	0	0	reg_d	other	vowel_change
+model_jacobian	θ r o ʊ	θ r uː	θ r o ʊ d	k æ r iː	k æ r iː d	k æ r iː d	θ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_jacobian	b æ k	b æ k t	b æ k t	t ɔ k	t ɔ k t	t ɔ k t	b æ k t	1	1	reg_t	reg_t	reg_t
+model_jacobian	f l æ ʃ	f l æ ʃ t	f l uː	f l a ɪ	f l uː	f l uː	NA	0	0	reg_t	other	vowel_change
+model_jacobian	ɡ r o ʊ	ɡ r uː	ɡ r o ʊ d	k æ r iː	k æ r iː d	k æ r iː d	ɡ r o ʊ d	1	0	vowel_change	reg_d	reg_d
+model_jacobian	s m a ɪ l	s m a ɪ l d	s a ɪ d	h o ʊ l d	h ɛ l d	h ɛ l d	NA	0	0	reg_d	other	vowel_change
+model_jacobian	s t ɑː p	s t ɑː p t	s t e p t	f a ɪ n d	f a ʊ n d	f a ʊ n d	NA	0	0	reg_t	vowel_change_suffix	vowel_change
+model_jacobian	s t ɹ̩	s t ɹ̩ d	s t t	t r a ɪ	t r a ɪ d	t r a ɪ d	s t ɹ̩ d	0	1	reg_d	other	reg_d
+model_jacobian	t͡ʃ uː	t͡ʃ uː d	t͡ʃ t uː z d	d uː	d ɪ d	d ɪ d	t͡ʃ ɪ d	0	0	reg_d	other	vowel_change_suffix
+model_jacobian	d r ɛ s	d r ɛ s t	d r ɛ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	d r ɛ s t	1	1	reg_t	reg_t	reg_t
+model_jacobian	ə n d ɹ̩ s t æ n d	ə n d ɹ̩ s t ʊ d	r æ d	ɪ n t ə r ɛ s t	ɪ n t ə r ɛ s t ə d	ɪ n t ə r ɛ s t ə d	ə n d ɹ̩ s t æ n d ə d	0	0	rhyme_replaced	other	reg_əd
+model_jacobian	t͡ʃ e ɪ s	t͡ʃ e ɪ s t	t͡ʃ e ɪ s t	m ɪ k s	m ɪ k s t	m ɪ k s t	t͡ʃ e ɪ s t	1	1	reg_t	reg_t	reg_t
+model_jacobian	h ʌ ɡ	h ʌ ɡ d	h ʌ ɡ	d ɔ ɡ	d ɔ ɡ d	d ɔ ɡ d	h ʌ ɡ d	0	1	reg_d	no_change	reg_d
+model_jacobian	h ɪ t	h ɪ t	h ʌ t	ɡ ɪ v	ɡ e ɪ v	ɡ e ɪ v	NA	0	0	no_change	vowel_change	vowel_change
+model_jacobian	h æ m ɹ̩	h æ m ɹ̩ d	h æ m ɹ̩ d	m æ t ɹ̩	m æ t ɹ̩ d	m æ t ɹ̩ d	h æ m ɹ̩ d	1	1	reg_d	reg_d	reg_d
+model_jacobian	w a ɪ n d	w a ɪ n d ə d	w a ʊ n d	f a ɪ n d	f a ʊ n d	f a ʊ n d	w a ʊ n d	1	0	reg_əd	vowel_change	vowel_change
 string	iː t	e ɪ t	iː t t t	s ɪ t	s æ t	s æ t	NA	0	0	vowel_change	coda_change	vowel_change
 string	m e ɪ k	m e ɪ d	m e ɪ k	w e ɪ k	w e ɪ k	w o ʊ k	m e ɪ k	1	0	coda_change	no_change	no_change
 string	n o ʊ	n uː	n o ʊ d	m o ʊ	m o ʊ d	m o ʊ d	n o ʊ d	1	0	vowel_change	reg_d	reg_d

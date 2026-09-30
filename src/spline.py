@@ -17,6 +17,7 @@ import math
 import random
 
 import torch
+from torch.func import jacrev
 from torch.nn import functional as F
 
 import analogy
@@ -136,13 +137,19 @@ def decompose(lm, ids, k=6):
         # exactly along the template
         scaled = forward(lm, 1.5 * x0, frozen=store)[t, chosen]
         linear_scaled = (a_chosen * 1.5 * x0).sum() + b_chosen
+    # the templates of every candidate token at once: the Jacobian of all
+    # logits at step t through the frozen map, (T, V, d). unlike a_chosen it
+    # does not depend on which token the model chose, so similarity in it is
+    # not similarity of the choice by construction
+    jacobian = jacrev(lambda x: forward(lm, x, frozen=store)[t])(x0.detach())
+    jacobian = jacobian.permute(1, 0, 2).detach()
 
     return {
         'code': torch.cat([store['relu_0'][t], store['relu_1'][t]]).bool(),
         'full_code': torch.cat([store['relu_0'], store['relu_1']], dim=-1).bool(),
         'chosen': chosen, 'runner': runner,
         'margin': (logits[t, chosen] - logits[t, runner]).item(),
-        'a_chosen': a_chosen, 'a_margin': a_margin,
+        'a_chosen': a_chosen, 'a_margin': a_margin, 'jacobian': jacobian,
         'contrib_margin': (a_margin * x0).sum(-1).detach(),
         'exact_error': abs(linear_chosen.item() - logits[t, chosen].item()),
         'affine_error': abs(scaled.item() - linear_scaled.item()),
@@ -159,7 +166,7 @@ def decompose_row(lm, ds, idx, pred, k=6):
     ids = torch.tensor(decision_sequence(ds, idx, pred), device=lm.seg_emb.weight.device)
     item = decompose(lm, ids, k)
     sep = ids.tolist().index(ds.vocab.sep_id)
-    for name in ('a_chosen', 'a_margin'):
+    for name in ('a_chosen', 'a_margin', 'jacobian'):
         a = item.pop(name)
         item[f'{name}_win'] = torch.cat([window(a, item['t'], k),
                                          window(a, sep - 1, k)]).detach().cpu()
@@ -169,14 +176,16 @@ def decompose_row(lm, ds, idx, pred, k=6):
 def decision_features(model, ds, preds, k=6) -> dict:
     """
     the decision-step features of every row of `ds` that the analogy methods
-    compare: ReLU codes (N, 512) and the margin and chosen-logit template
-    windows (N, 2 * k * d_model)
+    compare: ReLU codes (N, 512); the margin and chosen-logit template
+    windows (N, 2 * k * d_model); and the all-logit Jacobian windows
+    (N, 2 * k * vocab * d_model), the choice-free template
     """
     model.lm.eval()
     rows = [decompose_row(model.lm, ds, idx, preds[idx], k) for idx in range(len(ds))]
     return {'code': torch.stack([r['code'] for r in rows]),
             'template': torch.stack([r['a_margin_win'] for r in rows]),
-            'template_chosen': torch.stack([r['a_chosen_win'] for r in rows])}
+            'template_chosen': torch.stack([r['a_chosen_win'] for r in rows]),
+            'jacobian': torch.stack([r['jacobian_win'] for r in rows])}
 
 def analyze(model, splits, preds, k=6):
     """

@@ -1,0 +1,21 @@
+free walk: reproduces the model's output exactly, by class of that output
+                             n  jacobian    hidden   context
+  all                      900     0.877     0.886     0.694
+  regular                  802     0.963     0.960     0.772
+  no_change                 16     0.750     0.938     0.312
+  vowel_change               7     0.286     0.286     0.000
+  vowel_change_suffix       11     0.091     0.273     0.000
+  rhyme_replaced             4     0.000     0.000     0.000
+  coda_change                5     0.200     0.200     0.000
+  other                     55     0.018     0.109     0.018
+                                   0.892     0.877     0.739   <- matches gold instead
+
+forced steps: nearest step's operation equals the model's, by the model's operation
+                             n  jacobian    hidden   context
+  COPY                    4582     0.990     0.989     0.977
+  SUB                      114     0.044     0.061     0.009
+  INS                     1127     0.925     0.930     0.839
+  STOP                     900     0.987     0.993     0.950
+  decision steps          2158     0.897     0.903     0.835
+
+wrote ../results/en_0_1500/walk.tsv
